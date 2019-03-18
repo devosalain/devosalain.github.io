@@ -1,0 +1,1116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Generator" content="Kate, the KDE Advanced Text Editor" />
+<title>main.go</title>
+</head>
+<body>
+<pre style='color:#1f1c1b;background-color:#ffffff;'>
+<b>package</b> main
+<b>import</b> (<span style='color:#bf0303;'>&quot;fmt&quot;</span>; <span style='color:#bf0303;'>&quot;strconv&quot;</span>; <span style='color:#bf0303;'>&quot;reflect&quot;</span>;<span style='color:#bf0303;'>&quot;time&quot;</span>;<span style='color:#bf0303;'>&quot;sync&quot;</span>;<span style='color:#bf0303;'>&quot;runtime&quot;</span>)
+
+<b>var</b> K2 <span style='color:#0057ae;'>int</span>=<span style='color:#b08000;'>42</span>         <span style='color:#898887;'>//scope Global  level start uppercase,exposed</span>
+<b>var</b> k3 <span style='color:#0057ae;'>int</span>=<span style='color:#b08000;'>42</span>          <span style='color:#898887;'>//scope package level start lowercase</span>
+
+<b>func</b> part3_variables(){
+    fmt.Println(<span style='color:#bf0303;'>&quot;part3&quot;</span>)
+
+    <span style='color:#898887;'>//variables</span>
+    fmt.Println(<span style='color:#bf0303;'>&quot;hello world&quot;</span>)
+    fmt.Println(<span style='color:#bf0303;'>&quot;42&quot;</span>)
+    <b>var</b> i <span style='color:#0057ae;'>int</span>
+    i=<span style='color:#b08000;'>42</span>
+    <b>var</b> j <span style='color:#0057ae;'>int</span>=<span style='color:#b08000;'>42</span>
+    <b>var</b> p <span style='color:#0057ae;'>float32</span>=<span style='color:#b08000;'>42</span>
+    a :=<span style='color:#b08000;'>42</span>                       <span style='color:#898887;'>// scope block level</span>
+    k :=<span style='color:#b08000;'>42</span>                       <span style='color:#898887;'>// shadowing</span>
+    fmt.Printf(<span style='color:#bf0303;'>&quot;%v,%T </span><span style='color:#924c9d;'>\n</span><span style='color:#bf0303;'>&quot;</span>,k,k)      <span style='color:#898887;'>// 42 , int</span>
+    l :=<span style='color:#b08000;'>42</span>.                        
+    fmt.Println(<span style='color:#bf0303;'>&quot;%v,%T&quot;</span>,l,l)      <span style='color:#898887;'>// 42 , float64 </span>
+    <b>var</b> ( u=<span style='color:#b08000;'>1</span> ; v=<span style='color:#b08000;'>2</span> )
+    <b>var</b> outerVeryLongName <span style='color:#0057ae;'>int</span>=<span style='color:#b08000;'>1</span>
+    <b>var</b> innerShorter      <span style='color:#0057ae;'>int</span>=<span style='color:#b08000;'>1</span>
+    <b>var</b> t                 <span style='color:#0057ae;'>int</span>=<span style='color:#b08000;'>1</span>
+    fmt.Println(i,j,a,u,v,p,t,outerVeryLongName,innerShorter)
+}    
+
+<b>func</b> part4_primitives(){
+    fmt.Println(<span style='color:#bf0303;'>&quot;part4&quot;</span>)
+    <b>var</b> i <span style='color:#0057ae;'>int</span>=<span style='color:#b08000;'>1</span>
+    <b>var</b> m <span style='color:#0057ae;'>float32</span>=<span style='color:#0057ae;'>float32</span>(<span style='color:#b08000;'>42</span>)
+    <b>var</b> s <span style='color:#0057ae;'>string</span> =<span style='color:#0057ae;'>string</span>(<span style='color:#b08000;'>42</span>)
+    fmt.Println(s)              <span style='color:#898887;'>// &quot;*&quot;</span>
+    s=strconv.Itoa(i)
+    n,err :=strconv.Atoi(s)
+    fmt.Println(i,m,s,err)
+      
+    <b>var</b> b <span style='color:#0057ae;'>bool</span>=<span style='color:#006e28;'>true</span>
+    h:= <span style='color:#b08000;'>1</span>==<span style='color:#b08000;'>1</span>   <span style='color:#898887;'>//true</span>
+    <b>var</b> id <span style='color:#0057ae;'>int</span> =<span style='color:#b08000;'>0</span>         <span style='color:#898887;'>//os default</span>
+    <b>var</b> i8 <span style='color:#0057ae;'>int8</span> =<span style='color:#b08000;'>0</span>
+    <b>var</b> i16 <span style='color:#0057ae;'>int16</span> =<span style='color:#b08000;'>0</span>
+    <b>var</b> i32 <span style='color:#0057ae;'>int32</span> =<span style='color:#b08000;'>0</span>
+    <b>var</b> i64 <span style='color:#0057ae;'>int64</span> =<span style='color:#b08000;'>0</span>
+    fmt.Println(b,n,h,id,i8,i16,i32,i64)
+    
+    <b>var</b> uid <span style='color:#0057ae;'>uint</span> =<span style='color:#b08000;'>0</span>         <span style='color:#898887;'>//os default</span>
+    <b>var</b> ui8 <span style='color:#0057ae;'>uint8</span> =<span style='color:#b08000;'>0</span>
+    <b>var</b> ui8b <span style='color:#0057ae;'>byte</span> =<span style='color:#b08000;'>0</span>       <span style='color:#898887;'>//uint8</span>
+    <b>var</b> ui16 <span style='color:#0057ae;'>uint16</span> =<span style='color:#b08000;'>0</span>
+    <b>var</b> ui32 <span style='color:#0057ae;'>uint32</span> =<span style='color:#b08000;'>0</span>
+    fmt.Println(uid,ui8,ui8b,ui16,ui32)
+    
+    <b>var</b> f32 <span style='color:#0057ae;'>float32</span> =<span style='color:#b08000;'>0</span>
+    <b>var</b> f64 <span style='color:#0057ae;'>float64</span> =<span style='color:#b08000;'>0</span>      
+    fmt.Println(f32,f64)
+    
+    <b>var</b> c1 <span style='color:#0057ae;'>complex64</span>=<span style='color:#b08000;'>1</span>+<span style='color:#b08000;'>2</span>i       <span style='color:#898887;'>//2 float64 </span>
+    <b>var</b> c2 <span style='color:#0057ae;'>complex128</span>=<span style='color:#644a9b;'>complex</span>(<span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>2</span>)
+    fmt.Println(c1,<span style='color:#644a9b;'>real</span>(c1),<span style='color:#644a9b;'>imag</span>(c1),c2)
+    
+    <b>var</b> st <span style='color:#0057ae;'>string</span> =<span style='color:#bf0303;'>&quot;alaindevos&quot;</span>
+    <b>var</b> bb <span style='color:#0057ae;'>byte</span>= st[<span style='color:#b08000;'>2</span>]
+    fmt.Println(st,bb,st+st)
+    
+    <span style='color:#898887;'>// s5[2]=string(42) assignent is illegal</span>
+    <span style='color:#898887;'>// Conversion to bytes to manipulate strings</span>
+    <b>var</b> cb[] <span style='color:#0057ae;'>byte</span>=[]<span style='color:#0057ae;'>byte</span>(st)       
+    fmt.Println(cb)       <span style='color:#898887;'>// ascii utf8 values</span>
+    <b>var</b> r1 <span style='color:#0057ae;'>int32</span> =<span style='color:#924c9d;'>'a'</span>           <span style='color:#898887;'>// utf32 value</span>
+    <b>var</b> r2 <span style='color:#0057ae;'>rune</span> =<span style='color:#924c9d;'>'a'</span>           <span style='color:#898887;'>// utf32 value</span>
+    fmt.Println(r1,r2)       <span style='color:#898887;'>// ascii utf8 values</span>
+      
+    <span style='color:#898887;'>//operators</span>
+    <b>var</b> b1 <span style='color:#0057ae;'>int</span>  =<span style='color:#b08000;'>3</span>
+    <b>var</b> b2 <span style='color:#0057ae;'>int8</span> =<span style='color:#b08000;'>3</span>
+    <b>var</b> b3 <span style='color:#0057ae;'>int</span>  =b1+<span style='color:#0057ae;'>int</span>(b2)
+    fmt.Println(b1,b2,b3)
+    <span style='color:#898887;'>// &amp; : bitwise and , |:bitwise or , ^:bitwise xor , &lt;&lt;: bitshifting</span>
+}      
+
+<b>func</b> part5_constants(){
+    fmt.Println(<span style='color:#bf0303;'>&quot;part5&quot;</span>)
+
+    <span style='color:#898887;'>//constants</span>
+    <b>const</b> myConst <span style='color:#0057ae;'>int</span> = <span style='color:#b08000;'>42</span>
+    fmt.Println(myConst)
+    <span style='color:#898887;'>//enumarated constants  ,iota: counter</span>
+    <b>const</b> ( a=<span style='color:#006e28;'>iota</span> ; b=<span style='color:#006e28;'>iota</span> ; c=<span style='color:#006e28;'>iota</span>)       
+    fmt.Println(a,b,c)
+}
+
+<b>func</b> part6_arrays(){
+    fmt.Println(<span style='color:#bf0303;'>&quot;part6&quot;</span>)
+    
+    <span style='color:#898887;'>//arrays</span>
+    <b>var</b> ar1 [<span style='color:#b08000;'>3</span>]<span style='color:#0057ae;'>int</span>= [<span style='color:#b08000;'>3</span>]<span style='color:#0057ae;'>int</span>{<span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>2</span>,<span style='color:#b08000;'>3</span>} 
+    <b>var</b> ar2 [<span style='color:#b08000;'>3</span>]<span style='color:#0057ae;'>int</span>= [...]<span style='color:#0057ae;'>int</span>{<span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>2</span>,<span style='color:#b08000;'>3</span>} 
+    <b>var</b> ar3 [<span style='color:#b08000;'>3</span>]<span style='color:#0057ae;'>int</span>
+    ar3[<span style='color:#b08000;'>0</span>]=<span style='color:#b08000;'>1</span>          
+    fmt.Println(ar1,ar2,ar3,<span style='color:#644a9b;'>len</span>(ar3)) <span style='color:#898887;'>//ar3[1]=0,ar3[2]=0</span>
+    <b>var</b> idx [<span style='color:#b08000;'>2</span>][<span style='color:#b08000;'>2</span>]<span style='color:#0057ae;'>int</span>=  [<span style='color:#b08000;'>2</span>][<span style='color:#b08000;'>2</span>]<span style='color:#0057ae;'>int</span> { [<span style='color:#b08000;'>2</span>]<span style='color:#0057ae;'>int</span> {<span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>0</span>} , [<span style='color:#b08000;'>2</span>]<span style='color:#0057ae;'>int</span> {<span style='color:#b08000;'>0</span>,<span style='color:#b08000;'>1</span>}}
+    <b>var</b> idy [<span style='color:#b08000;'>2</span>][<span style='color:#b08000;'>2</span>]<span style='color:#0057ae;'>int</span>=[...][<span style='color:#b08000;'>2</span>]<span style='color:#0057ae;'>int</span> { [<span style='color:#b08000;'>2</span>]<span style='color:#0057ae;'>int</span> {<span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>0</span>} , [<span style='color:#b08000;'>2</span>]<span style='color:#0057ae;'>int</span> {<span style='color:#b08000;'>0</span>,<span style='color:#b08000;'>1</span>}}
+    <b>var</b> idz [<span style='color:#b08000;'>2</span>][<span style='color:#b08000;'>2</span>] <span style='color:#0057ae;'>int</span>
+    idz[<span style='color:#b08000;'>0</span>]=[...]<span style='color:#0057ae;'>int</span> {<span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>0</span>}
+    idz[<span style='color:#b08000;'>1</span>]=[...]<span style='color:#0057ae;'>int</span> {<span style='color:#b08000;'>0</span>,<span style='color:#b08000;'>1</span>}
+    <b>var</b> idu [<span style='color:#b08000;'>2</span>][<span style='color:#b08000;'>2</span>]<span style='color:#0057ae;'>int</span>
+    idu=idz       <span style='color:#898887;'>// equal sign and functions calls copies arrays</span>
+    fmt.Println(idx,idy,idz,idu)
+    
+    <span style='color:#898887;'>//pointers</span>
+    idt:=&amp;idu
+    idu[<span style='color:#b08000;'>0</span>][<span style='color:#b08000;'>0</span>]=<span style='color:#b08000;'>9</span>             <span style='color:#898887;'>//changes idu and idt</span>
+    fmt.Println(idu,idt)
+     
+    <span style='color:#898887;'>//slice ,refence type</span>
+    s1:=[]<span style='color:#0057ae;'>int</span>{<span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>2</span>,<span style='color:#b08000;'>3</span>}
+    s2:=s1
+    s1[<span style='color:#b08000;'>0</span>]=<span style='color:#b08000;'>9</span>                <span style='color:#898887;'>// changes s1 and s2</span>
+    fmt.Println(s1,s2)
+    
+    s3:=s1[<span style='color:#b08000;'>0</span>:<span style='color:#b08000;'>3</span>]            <span style='color:#898887;'>//s1[0] ,s1[1], s1[2]           [first number is inclusive , second number is exlusive]</span>
+    s4:=s1[<span style='color:#b08000;'>1</span>:<span style='color:#b08000;'>2</span>]            <span style='color:#898887;'>//s1[1]</span>
+    fmt.Println(s3,s4)
+    
+    <span style='color:#898887;'>//convert array to slice</span>
+    sl1:=ar1[<span style='color:#b08000;'>0</span>:<span style='color:#644a9b;'>len</span>(ar1)]
+    fmt.Printf(<span style='color:#bf0303;'>&quot;%v, %T </span><span style='color:#924c9d;'>\n</span><span style='color:#bf0303;'>&quot;</span>,ar1,ar1)  <span style='color:#898887;'>//[3]int </span>
+    fmt.Printf(<span style='color:#bf0303;'>&quot;%v, %T </span><span style='color:#924c9d;'>\n</span><span style='color:#bf0303;'>&quot;</span>,sl1,sl1)     <span style='color:#898887;'>//[]int</span>
+    sl2:=<span style='color:#644a9b;'>make</span>([]<span style='color:#0057ae;'>int</span>,<span style='color:#b08000;'>3</span>)               <span style='color:#898887;'>// makes a slice of length 3</span>
+    sl3:=<span style='color:#644a9b;'>make</span>([]<span style='color:#0057ae;'>int</span>,<span style='color:#b08000;'>3</span>,<span style='color:#b08000;'>5</span>)               <span style='color:#898887;'>// makes a slice of length 3 and capacity 5</span>
+    sl3=<span style='color:#644a9b;'>append</span>(sl3,<span style='color:#b08000;'>8</span>,<span style='color:#b08000;'>9</span>)                    <span style='color:#898887;'>// length 5</span>
+    sl3=<span style='color:#644a9b;'>append</span>(sl3,<span style='color:#b08000;'>8</span>,<span style='color:#b08000;'>9</span>)                    <span style='color:#898887;'>// length 7</span>
+    fmt.Println(sl2,sl3,<span style='color:#644a9b;'>len</span>(sl3),<span style='color:#644a9b;'>cap</span>(sl3)) <span style='color:#898887;'>// length 5 capacity 10(it doubles)</span>
+    
+    sl4:=sl3[<span style='color:#b08000;'>1</span>:]      <span style='color:#898887;'>//removes first element</span>
+    sl5:=sl3[:<span style='color:#644a9b;'>len</span>(sl4)] <span style='color:#898887;'>//removes last element   </span>
+    fmt.Println(sl4,sl5)
+    
+    <span style='color:#898887;'>//split element</span>
+    sl6:=[]<span style='color:#0057ae;'>int</span>{<span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>2</span>,<span style='color:#b08000;'>3</span>,<span style='color:#b08000;'>4</span>,<span style='color:#b08000;'>5</span>,<span style='color:#b08000;'>6</span>,<span style='color:#b08000;'>7</span>,<span style='color:#b08000;'>8</span>,<span style='color:#b08000;'>9</span>}
+    fmt.Println(sl6)
+    
+    sl7:=sl6[:<span style='color:#b08000;'>2</span>]
+    sl8:=sl6[<span style='color:#b08000;'>2</span>:]
+    fmt.Println(sl6,sl7,sl8)
+}
+
+<b>func</b> part7_maps(){
+    fmt.Println(<span style='color:#bf0303;'>&quot;part7&quot;</span>)
+
+    <span style='color:#898887;'>//maps collection type </span>
+    <span style='color:#898887;'>//maps have no fixed order</span>
+    <span style='color:#898887;'>//data is passed by reference</span>
+    statepopulation:=<b>map</b>[<span style='color:#0057ae;'>string</span>]<span style='color:#0057ae;'>int</span>{
+    <span style='color:#bf0303;'>&quot;denderleeuw&quot;</span>:<span style='color:#b08000;'>1500</span>,
+    <span style='color:#bf0303;'>&quot;aalst&quot;</span>:<span style='color:#b08000;'>3500</span>,
+    }
+    map2:=<span style='color:#644a9b;'>make</span>(<b>map</b>[<span style='color:#0057ae;'>string</span>]<span style='color:#0057ae;'>int</span>)
+    statepopulation[<span style='color:#bf0303;'>&quot;ninove&quot;</span>]=<span style='color:#b08000;'>300</span>
+    <span style='color:#644a9b;'>delete</span>(statepopulation,<span style='color:#bf0303;'>&quot;denderleeuw&quot;</span>)
+    fmt.Println(statepopulation,map2,<span style='color:#644a9b;'>len</span>(statepopulation))
+    pop,ok:=statepopulation[<span style='color:#bf0303;'>&quot;denderleeuw&quot;</span>]
+    fmt.Println(pop,ok)
+    
+    <span style='color:#898887;'>//struct , datasets are copied</span>
+    <b>type</b> Doctor <b>struct</b>{
+        number <span style='color:#0057ae;'>int</span>
+        name <span style='color:#0057ae;'>string</span> 
+        companions []<span style='color:#0057ae;'>string</span>        
+    }
+    aDoctor:=Doctor{
+        number:<span style='color:#b08000;'>3</span>,
+        name:<span style='color:#bf0303;'>&quot;Alain&quot;</span>,
+        companions: []<span style='color:#0057ae;'>string</span>{<span style='color:#bf0303;'>&quot;Eddy&quot;</span>,<span style='color:#bf0303;'>&quot;Emiel&quot;</span>},
+    }
+    fmt.Println(aDoctor,aDoctor.companions[<span style='color:#b08000;'>1</span>])
+    
+    <span style='color:#898887;'>//anonymous struct , for short lived models</span>
+    aDoctor2:=<b>struct</b>{
+            number <span style='color:#0057ae;'>int</span>
+            name <span style='color:#0057ae;'>string</span>
+            }   {
+            number:<span style='color:#b08000;'>16</span>,
+            name:<span style='color:#bf0303;'>&quot;john&quot;</span>,
+            }
+    bDoctor:=aDoctor  <span style='color:#898887;'>//copy</span>
+    cDoctor:=&amp;aDoctor <span style='color:#898887;'>//pointer</span>
+    fmt.Println(aDoctor2,bDoctor,cDoctor)
+    
+    <span style='color:#898887;'>//embedding , for base behaviour, not for polymorphism, or interchanging object types</span>
+    <b>type</b> Animal <b>struct</b>{
+        Name <span style='color:#0057ae;'>string</span>
+    }
+    <b>type</b> Bird <b>struct</b>{
+        Animal             <span style='color:#898887;'>// inner,type &quot;inheritence&quot;,embedding  </span>
+        speed <span style='color:#0057ae;'>float32</span>
+    }
+    bi1:=Bird{}
+    bi1.Name=<span style='color:#bf0303;'>&quot;emu&quot;</span>
+    bi1.speed=<span style='color:#b08000;'>48</span>
+    bi2:=Bird{
+        Animal: Animal{Name :<span style='color:#bf0303;'>&quot;emu&quot;</span>},
+        speed: <span style='color:#b08000;'>48</span>,
+    }
+    fmt.Println(bi1,bi2)
+    
+    <span style='color:#898887;'>//tags</span>
+    <b>type</b> Animal2 <b>struct</b>{
+        Name <span style='color:#0057ae;'>string</span> <span style='color:#bf0303;'>`required max:&quot;100&quot;`</span> <span style='color:#898887;'>//restrictions</span>
+    }
+    atype:=reflect.TypeOf(Animal2{})
+    afield,_:=atype.FieldByName(<span style='color:#bf0303;'>&quot;Name&quot;</span>)
+    atag:=afield.Tag
+    fmt.Println(atag)     <span style='color:#898887;'>//prints : required max:&quot;100&quot;</span>
+}
+
+<b>func</b> part8_if() {
+     fmt.Println(<span style='color:#bf0303;'>&quot;part8&quot;</span>)
+
+    <span style='color:#898887;'>//Control Flow</span>
+    <span style='color:#898887;'>//if</span>
+    <b>if</b> <span style='color:#006e28;'>true</span> {
+        fmt.Println(<span style='color:#bf0303;'>&quot;true&quot;</span>)
+        }
+    
+    <span style='color:#898887;'>//if else</span>
+    <b>if</b> ok:=(<span style='color:#b08000;'>1</span>==<span style='color:#b08000;'>1</span>)&amp;&amp;(<span style='color:#b08000;'>0</span>==<span style='color:#b08000;'>0</span>)&amp;&amp;(!<span style='color:#006e28;'>false</span>);ok {
+        fmt.Println(ok)
+        } <b>else</b> {
+        fmt.Println(<span style='color:#bf0303;'>&quot;untrue&quot;</span>)
+        }
+    
+    <span style='color:#898887;'>//if else if </span>
+    mycount:=<span style='color:#b08000;'>3</span>.<span style='color:#b08000;'>5</span>
+    <b>if</b> mycount &lt; <span style='color:#b08000;'>3</span>{
+        fmt.Println(<span style='color:#bf0303;'>&quot;mycount&lt;3&quot;</span>)
+    } <b>else</b> <b>if</b> mycount &lt; <span style='color:#b08000;'>4</span>{
+        fmt.Println(<span style='color:#bf0303;'>&quot;3&lt;=mycount&lt;4&quot;</span>)
+    } <b>else</b> {
+        fmt.Println(<span style='color:#bf0303;'>&quot;4&lt;=mycount&quot;</span>)
+    }
+    
+    <span style='color:#898887;'>//switch</span>
+    <b>switch</b> <span style='color:#b08000;'>3</span> {
+        <b>case</b> <span style='color:#b08000;'>2</span>:
+                fmt.Println(<span style='color:#bf0303;'>&quot;2&quot;</span>)
+        <b>case</b> <span style='color:#b08000;'>3</span>:
+                fmt.Println(<span style='color:#bf0303;'>&quot;3&quot;</span>)
+        <b>case</b> <span style='color:#b08000;'>4</span>:
+                fmt.Println(<span style='color:#bf0303;'>&quot;4&quot;</span>)
+        <b>default</b> :
+                fmt.Println(<span style='color:#bf0303;'>&quot;else&quot;</span>)
+    }
+    
+    <span style='color:#898887;'>//switch</span>
+    <b>switch</b> i:=<span style='color:#b08000;'>1</span>+<span style='color:#b08000;'>1</span>;i+<span style='color:#b08000;'>1</span> {
+        <b>case</b> <span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>3</span>,<span style='color:#b08000;'>5</span>:
+                fmt.Println(<span style='color:#bf0303;'>&quot;odd&quot;</span>)
+        <b>case</b> <span style='color:#b08000;'>2</span>,<span style='color:#b08000;'>4</span>,<span style='color:#b08000;'>6</span>:
+                fmt.Println(<span style='color:#bf0303;'>&quot;even&quot;</span>)
+        <b>default</b> :
+                fmt.Println(<span style='color:#bf0303;'>&quot;unknown&quot;</span>)
+    }
+    
+    <span style='color:#898887;'>//switch with implicit break between cases</span>
+    ii:=<span style='color:#b08000;'>3</span>.<span style='color:#b08000;'>5</span>
+    <b>switch</b> {
+        <b>case</b> ii&lt;<span style='color:#b08000;'>3</span>:
+                fmt.Println(<span style='color:#bf0303;'>&quot;ii&lt;3&quot;</span>)
+        <b>case</b> (<span style='color:#b08000;'>3</span>&lt;=ii) &amp;&amp; (ii&lt;=<span style='color:#b08000;'>4</span>):
+                fmt.Println(<span style='color:#bf0303;'>&quot;3&lt;=ii&lt;=4&quot;</span>)
+        <b>case</b> ii&gt;<span style='color:#b08000;'>4</span>:
+                fmt.Println(<span style='color:#bf0303;'>&quot;ii&gt;4&quot;</span>)
+        <b>default</b>:
+    }
+    
+    <span style='color:#898887;'>//fallthrough</span>
+    <b>switch</b> {
+        <b>case</b> ii&lt;<span style='color:#b08000;'>3</span>:
+                fmt.Println(<span style='color:#bf0303;'>&quot;ii&lt;3&quot;</span>)
+                <b>fallthrough</b> 
+        <b>case</b> ii&lt;<span style='color:#b08000;'>4</span>:
+                fmt.Println(<span style='color:#bf0303;'>&quot;ii&lt;4&quot;</span>)
+                <b>fallthrough</b> 
+        <b>case</b> ii&lt;<span style='color:#b08000;'>5</span>:
+                fmt.Println(<span style='color:#bf0303;'>&quot;ii&lt;5&quot;</span>)
+                <b>fallthrough</b> 
+        <b>default</b>:
+    }
+    
+    <span style='color:#898887;'>//An interface can be any type , here int </span>
+    <span style='color:#898887;'>//switch of type</span>
+    <b>var</b> ty <b>interface</b>{} = <span style='color:#b08000;'>1</span>
+    <b>switch</b> ty.(<b>type</b>) {
+        <b>case</b> <span style='color:#0057ae;'>int</span>:
+            fmt.Println(<span style='color:#bf0303;'>&quot;ty has type int&quot;</span>)
+        <b>case</b> <span style='color:#0057ae;'>float64</span>:
+            fmt.Println(<span style='color:#bf0303;'>&quot;ty has type float64&quot;</span>)
+            <b>break</b>
+            fmt.Println(<span style='color:#bf0303;'>&quot;do not execute this&quot;</span>)
+        <b>default</b>: 
+    }
+}
+
+
+<b>func</b> part9_looping() {
+    fmt.Println(<span style='color:#bf0303;'>&quot;part9&quot;</span>)
+
+    <span style='color:#898887;'>//For looping</span>
+    <b>for</b> a:=<span style='color:#b08000;'>1</span>;a&lt;=<span style='color:#b08000;'>3</span>;a++ {
+        fmt.Println(a)
+    }
+    
+    a:=<span style='color:#b08000;'>1</span>
+    <b>for</b> ;a&lt;=<span style='color:#b08000;'>3</span>;a++ {
+        fmt.Println(a)
+    }
+    
+    a=<span style='color:#b08000;'>1</span>
+    <span style='color:#898887;'>//while </span>
+    <b>for</b> ;a&lt;=<span style='color:#b08000;'>3</span>;{
+        fmt.Println(a)
+        a++
+    }
+    
+    <span style='color:#898887;'>//while with sugar</span>
+    a=<span style='color:#b08000;'>1</span>
+    <b>for</b> a&lt;=<span style='color:#b08000;'>3</span>{
+        fmt.Println(a)
+        a++
+    }
+    
+    <span style='color:#898887;'>// do while</span>
+    a=<span style='color:#b08000;'>1</span>
+    <b>for</b> {
+        fmt.Println(a)
+        a++
+        <b>if</b> a==<span style='color:#b08000;'>4</span> {
+            <b>break</b> 
+        }
+    }
+    
+    <span style='color:#898887;'>// continue</span>
+    a=<span style='color:#b08000;'>1</span>
+    <b>for</b>{
+        fmt.Println(a)
+        a++
+        <b>if</b> a&lt;<span style='color:#b08000;'>4</span>{
+            <b>continue</b>
+        }
+    <b>break</b>
+    }
+    
+    <span style='color:#898887;'>//Label to break out of nested loops</span>
+    Myouter:
+    <b>for</b> i1:=<span style='color:#b08000;'>0</span>;i1&lt;<span style='color:#b08000;'>3</span>;i1++ {
+        <b>for</b> i2:=<span style='color:#b08000;'>0</span>;i2&lt;<span style='color:#b08000;'>3</span>;i2++ {
+            i3:=i1*i2;
+            fmt.Println(i3)
+            <b>if</b> (i3&gt;<span style='color:#b08000;'>5</span>) {
+                <b>break</b> Myouter 
+            }
+        }
+    }
+    
+    <span style='color:#898887;'>//Collection for loops</span>
+    <span style='color:#898887;'>//slice </span>
+    sl:= []<span style='color:#0057ae;'>int</span>{<span style='color:#b08000;'>3</span>,<span style='color:#b08000;'>2</span>,<span style='color:#b08000;'>1</span>}
+    <b>for</b> k,v:=<b>range</b> sl {
+        <span style='color:#898887;'>//k is key or index ; v is the value</span>
+        fmt.Println(k,v)
+    }
+    
+    <span style='color:#898887;'>//array     </span>
+    <span style='color:#898887;'>//slice </span>
+    ar:= [<span style='color:#b08000;'>3</span>]<span style='color:#0057ae;'>int</span>{<span style='color:#b08000;'>3</span>,<span style='color:#b08000;'>2</span>,<span style='color:#b08000;'>1</span>}
+    <b>for</b> k,v:=<b>range</b> ar {
+        <span style='color:#898887;'>//k is key or index ; v is the value</span>
+        fmt.Println(k,v)
+    }
+    
+    <span style='color:#898887;'>//map</span>
+    mapa:=<b>map</b>[<span style='color:#0057ae;'>int</span>]<span style='color:#0057ae;'>int</span> {
+        <span style='color:#b08000;'>0</span>: <span style='color:#b08000;'>3</span>,
+        <span style='color:#b08000;'>1</span>: <span style='color:#b08000;'>2</span>,
+        <span style='color:#b08000;'>2</span>: <span style='color:#b08000;'>1</span>,
+    }
+    <b>for</b> k,v:=<b>range</b> mapa {
+        <span style='color:#898887;'>//k is key or index ; v is the value</span>
+        fmt.Println(k,v)
+    }
+    
+    s:=<span style='color:#bf0303;'>&quot;321&quot;</span>
+    <b>for</b> k,v:=<b>range</b> s {
+        <span style='color:#898887;'>//k is key or index ; v is the value</span>
+        fmt.Println(k,<span style='color:#0057ae;'>string</span>(v))
+    }
+    <span style='color:#898887;'>// _ : dummy or placeholder</span>
+    s=<span style='color:#bf0303;'>&quot;321&quot;</span>
+    <b>for</b> _,v:=<b>range</b> s {
+        <span style='color:#898887;'>//k is key or index ; v is the value</span>
+        fmt.Println(<span style='color:#0057ae;'>string</span>(v))
+    }
+}
+
+<b>func</b> part10_defer() {
+    fmt.Println(<span style='color:#bf0303;'>&quot;part10&quot;</span>)
+
+    <span style='color:#898887;'>//defer , order  is lifo , used to close resources</span>
+    <span style='color:#898887;'>// E.g. file.open</span>
+    <span style='color:#898887;'>//      defer file.close</span>
+    {
+        fmt.Println(<span style='color:#bf0303;'>&quot;a&quot;</span>)
+        <b>defer</b> fmt.Println(<span style='color:#bf0303;'>&quot;1&quot;</span>)
+        fmt.Println(<span style='color:#bf0303;'>&quot;b&quot;</span>)        
+    }
+    
+    {
+        <b>defer</b> fmt.Println(<span style='color:#bf0303;'>&quot;2&quot;</span>)
+        fmt.Println(<span style='color:#bf0303;'>&quot;a&quot;</span>)
+        <b>defer</b> fmt.Println(<span style='color:#bf0303;'>&quot;3&quot;</span>)
+        fmt.Println(<span style='color:#bf0303;'>&quot;b&quot;</span>)        
+    }
+    
+    <span style='color:#898887;'>//Prints &quot;start&quot;</span>
+    {
+        fmt.Println(<span style='color:#bf0303;'>&quot;A:-------------&quot;</span>)
+        a:=<span style='color:#bf0303;'>&quot;4:start&quot;</span>
+        <b>defer</b> fmt.Println(a)
+        a=<span style='color:#bf0303;'>&quot;4:end&quot;</span>
+    }
+    
+    <span style='color:#898887;'>//Panics (exceptions) ,used when an error returned must be handled.</span>
+    <span style='color:#898887;'>//Note: Panics happen after defer statements are executed.</span>
+    <span style='color:#898887;'>//Panics don't have to be fatal</span>
+    {
+        fmt.Println(<span style='color:#bf0303;'>&quot;B:------------&quot;</span>)
+        fmt.Println(<span style='color:#bf0303;'>&quot;Take resource&quot;</span>)
+        <b>defer</b> fmt.Println(<span style='color:#bf0303;'>&quot;5:Release resource&quot;</span>)
+        a,b:=<span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>0</span>.<span style='color:#b08000;'>1</span>
+        <b>if</b> (b==<span style='color:#b08000;'>0</span>){
+                    <span style='color:#644a9b;'>panic</span>(<span style='color:#bf0303;'>&quot;runtime error: integer divide by zero Byebye&quot;</span>)
+        }
+        fmt.Println(a,b)
+<span style='color:#898887;'>//      ans:=a/b </span>
+<span style='color:#898887;'>//      fmt.Println(ans)</span>
+    }
+    fmt.Println(<span style='color:#bf0303;'>&quot;--------------&quot;</span>)
+    fmt.Println(<span style='color:#bf0303;'>&quot;Deferred stuff&quot;</span>)
+}
+
+
+<b>func</b> part11_pointers() {
+    fmt.Println(<span style='color:#bf0303;'>&quot;part11&quot;</span>)
+
+    <span style='color:#898887;'>//Pointers</span>
+    <b>var</b> a   <span style='color:#0057ae;'>int</span> = <span style='color:#b08000;'>42</span>
+    <b>var</b> pa *<span style='color:#0057ae;'>int</span> = &amp;a        <span style='color:#898887;'>//address</span>
+    fmt.Println(pa)         <span style='color:#898887;'>//address </span>
+    fmt.Println(*pa)        <span style='color:#898887;'>//dereference operator, value </span>
+    *pa=<span style='color:#b08000;'>7</span>
+    fmt.Println(*pa)        <span style='color:#898887;'>//dereference operator, value </span>
+    
+    <b>var</b> ar=[<span style='color:#b08000;'>3</span>]<span style='color:#0057ae;'>int</span>{<span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>2</span>,<span style='color:#b08000;'>3</span>}
+    p0:=&amp;ar[<span style='color:#b08000;'>0</span>]
+    p1:=&amp;ar[<span style='color:#b08000;'>1</span>]
+<span style='color:#898887;'>//  p2:=&amp;ar[1]+8            //invalid</span>
+    fmt.Printf(<span style='color:#bf0303;'>&quot;%v %p %p </span><span style='color:#924c9d;'>\n</span><span style='color:#bf0303;'>&quot;</span>,ar,p0,p1)
+    
+    <b>type</b> aStruct <b>struct</b>{
+        aint <span style='color:#0057ae;'>int</span>
+    }
+    <b>var</b> ps *aStruct
+    ps=&amp;aStruct{ aint: <span style='color:#b08000;'>42</span>}
+    fmt.Println(ps)
+    
+    <b>var</b> ps2 *aStruct       
+    fmt.Println(ps2)               <span style='color:#898887;'>// &lt;nil&gt;</span>
+    ps2=<span style='color:#644a9b;'>new</span>(aStruct)
+    fmt.Println(ps2)               <span style='color:#898887;'>// &amp;{0}</span>
+    (*ps2).aint=<span style='color:#b08000;'>5</span>
+    fmt.Println(ps2)               <span style='color:#898887;'>// &amp;{5}</span>
+    fmt.Println((*ps2).aint)       <span style='color:#898887;'>// 5</span>
+    fmt.Println(ps2.aint)          <span style='color:#898887;'>// sugar</span>
+    
+    <span style='color:#898887;'>//array ,copies</span>
+    ar=[<span style='color:#b08000;'>3</span>] <span style='color:#0057ae;'>int</span>{<span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>2</span>,<span style='color:#b08000;'>3</span>}
+    ar2:=ar                     <span style='color:#898887;'>//copies </span>
+    fmt.Println(ar,ar2)
+    ar[<span style='color:#b08000;'>1</span>]=<span style='color:#b08000;'>42</span>
+    fmt.Println(ar,ar2)
+
+    <span style='color:#898887;'>//slice , by reference </span>
+    <b>var</b> sl=[] <span style='color:#0057ae;'>int</span>{<span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>2</span>,<span style='color:#b08000;'>3</span>}
+    sl2:=sl                     <span style='color:#898887;'>// </span>
+    fmt.Println(sl,sl2)
+    sl[<span style='color:#b08000;'>1</span>]=<span style='color:#b08000;'>42</span>                    <span style='color:#898887;'>//changes both</span>
+    fmt.Println(sl,sl2)
+    fmt.Printf(<span style='color:#bf0303;'>&quot;%p %p </span><span style='color:#924c9d;'>\n</span><span style='color:#bf0303;'>&quot;</span>,&amp;sl,&amp;sl2)
+    fmt.Printf(<span style='color:#bf0303;'>&quot;%p %p </span><span style='color:#924c9d;'>\n</span><span style='color:#bf0303;'>&quot;</span>,&amp;sl[<span style='color:#b08000;'>1</span>],&amp;sl2[<span style='color:#b08000;'>1</span>])      <span style='color:#898887;'>//same</span>
+    
+    <span style='color:#898887;'>//map , by reference </span>
+    ma:=<b>map</b>[<span style='color:#0057ae;'>string</span>]<span style='color:#0057ae;'>string</span>{<span style='color:#bf0303;'>&quot;aaa&quot;</span>:<span style='color:#bf0303;'>&quot;111&quot;</span>,<span style='color:#bf0303;'>&quot;bbb&quot;</span>:<span style='color:#bf0303;'>&quot;222&quot;</span>}
+    ma2:=ma
+    fmt.Println(ma,ma2)
+    ma[<span style='color:#bf0303;'>&quot;bbb&quot;</span>]=<span style='color:#bf0303;'>&quot;333&quot;</span>            <span style='color:#898887;'>//changes both</span>
+    fmt.Println(ma,ma2)
+    
+    <span style='color:#898887;'>//Be carefull passing maps and slices in an application can change underlying data</span>
+    <span style='color:#898887;'>//This does not happen with primitives,arrays,structs [There normally everything is copied]</span>
+    
+}
+
+<span style='color:#898887;'>//functions</span>
+<b>func</b> myFunction1(msg <span style='color:#0057ae;'>string</span>,idx <span style='color:#0057ae;'>int</span>) {
+        fmt.Println(msg,idx)
+}
+<span style='color:#898887;'>//Same types</span>
+<b>func</b> myFunction2(msg1,msg2 <span style='color:#0057ae;'>string</span>) {
+        fmt.Println(msg1,msg2)
+}
+
+<span style='color:#898887;'>//Pointers</span>
+<b>func</b> myFunction3(msg *<span style='color:#0057ae;'>string</span>) {
+        fmt.Println(*msg)
+        *msg=<span style='color:#bf0303;'>&quot;1234567&quot;</span>
+}
+
+<b>func</b> mySum(msg <span style='color:#0057ae;'>string</span>,values ...<span style='color:#0057ae;'>int</span>){
+    fmt.Println(values)
+    fmt.Printf(<span style='color:#bf0303;'>&quot;%T </span><span style='color:#924c9d;'>\n</span><span style='color:#bf0303;'>&quot;</span>,values)        <span style='color:#898887;'>//slice</span>
+    result:=<span style='color:#b08000;'>0</span>
+    <b>for</b> _,v:=<b>range</b> values{
+        result +=v
+    }
+    fmt.Println(msg,result)
+}
+
+<b>func</b> mySum2(values ...<span style='color:#0057ae;'>int</span>) <span style='color:#0057ae;'>int</span> {
+    result:=<span style='color:#b08000;'>0</span>
+    <b>for</b> _,v:=<b>range</b> values{
+        result +=v
+    }
+    <b>return</b> result
+}
+
+<b>func</b> mySum3(values ...<span style='color:#0057ae;'>int</span>) *<span style='color:#0057ae;'>int</span> {
+    result:=<span style='color:#b08000;'>0</span>
+    <b>for</b> _,v:=<b>range</b> values{
+        result +=v
+    }
+    <b>return</b> &amp;result                   <span style='color:#898887;'>// the memory is moved from local stack to heap memory</span>
+}
+
+<span style='color:#898887;'>//named variables ,syntactical sugar</span>
+<b>func</b> mySum4(values ...<span style='color:#0057ae;'>int</span>) (myresult <span style='color:#0057ae;'>int</span>) {
+    myresult=<span style='color:#b08000;'>0</span>
+    <b>for</b> _,v:=<b>range</b> values{
+        myresult +=v
+    }
+    <b>return</b> 
+}
+
+<span style='color:#898887;'>//multiple return values and error type</span>
+<b>func</b> divide(t,n <span style='color:#0057ae;'>int</span>)(<span style='color:#0057ae;'>int</span>,<span style='color:#0057ae;'>error</span>) {
+<span style='color:#898887;'>//error checking at beginning</span>
+    <b>if</b> n==<span style='color:#b08000;'>0</span> {
+        <b>return</b> <span style='color:#b08000;'>0</span>,fmt.Errorf(<span style='color:#bf0303;'>&quot;Cannot divide by zero&quot;</span>)
+    } <b>else</b> {
+        <b>return</b> (t/n),<span style='color:#006e28;'>nil</span>
+    }    
+}
+
+<b>func</b> part12_alpha() {
+    fmt.Println(<span style='color:#bf0303;'>&quot;part12_alpha&quot;</span>)
+
+    <span style='color:#898887;'>//two parameters</span>
+    myFunction1(<span style='color:#bf0303;'>&quot;Hallo&quot;</span>,<span style='color:#b08000;'>2</span>)
+    
+    <span style='color:#898887;'>//same types</span>
+    myFunction2(<span style='color:#bf0303;'>&quot;Hallo&quot;</span>,<span style='color:#bf0303;'>&quot;Daar&quot;</span>)
+    
+    <span style='color:#898887;'>//Pass by reference ,is faster</span>
+    astring:=<span style='color:#bf0303;'>&quot;Alain&quot;</span>
+    myFunction3(&amp;astring)
+    fmt.Println(astring)             <span style='color:#898887;'>//1234567</span>
+    
+    <span style='color:#898887;'>//variable arguments</span>
+    mySum(<span style='color:#bf0303;'>&quot;The sum is :&quot;</span>,<span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>2</span>,<span style='color:#b08000;'>3</span>)
+    s:=mySum2(<span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>2</span>,<span style='color:#b08000;'>3</span>)
+    fmt.Println(s)
+    
+    <b>var</b> s2 *<span style='color:#0057ae;'>int</span>=mySum3(<span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>2</span>,<span style='color:#b08000;'>3</span>)
+    fmt.Println(<span style='color:#bf0303;'>&quot;The sum is&quot;</span>,*s2)
+
+    fmt.Println(mySum4(<span style='color:#b08000;'>1</span>,<span style='color:#b08000;'>2</span>,<span style='color:#b08000;'>3</span>))
+    
+    <b>var</b> d <span style='color:#0057ae;'>int</span>
+    <b>var</b> err <span style='color:#0057ae;'>error</span>
+    d,err=divide(<span style='color:#b08000;'>10</span>,<span style='color:#b08000;'>0</span>)
+    fmt.Println(d,err)
+    <b>if</b>(err!=<span style='color:#006e28;'>nil</span>){
+        fmt.Println(err)
+    } <b>else</b> {
+        fmt.Println(d)
+    }
+    
+    <span style='color:#898887;'>//declare an anonymous function i.e. without a name</span>
+    <b>func</b> () {
+        msg:=<span style='color:#bf0303;'>&quot;Hallo&quot;</span>              <span style='color:#898887;'>//isolated scope</span>
+        fmt.Println(msg) 
+    } ()  <span style='color:#898887;'>//invoke immediately</span>
+    
+    <span style='color:#898887;'>//with loop </span>
+    <b>for</b> i:=<span style='color:#b08000;'>0</span>;i&lt;<span style='color:#b08000;'>3</span>;i++ {
+        <b>func</b> (j <span style='color:#0057ae;'>int</span>) {
+            fmt.Println(j) 
+        } (i)  <span style='color:#898887;'>//invoke immediately</span>
+    }
+    
+    <span style='color:#898887;'>//anonymous function as variable</span>
+    k:=<b>func</b>(){
+        fmt.Println(<span style='color:#bf0303;'>&quot;hi&quot;</span>)
+    }
+    k()          <span style='color:#898887;'>//invoke</span>
+    
+    <b>var</b> maal <b>func</b>(<span style='color:#0057ae;'>int</span>,<span style='color:#0057ae;'>int</span>) (<span style='color:#0057ae;'>int</span>)
+    maal=<b>func</b>(a <span style='color:#0057ae;'>int</span>,b <span style='color:#0057ae;'>int</span>)(c <span style='color:#0057ae;'>int</span>){
+        c=a*b
+        <b>return</b> 
+    }
+    fmt.Println(maal(<span style='color:#b08000;'>2</span>,<span style='color:#b08000;'>3</span>))
+    
+    
+}
+
+<span style='color:#898887;'>//methods</span>
+<b>type</b> greeter <b>struct</b> {
+    greeting <span style='color:#0057ae;'>string</span>
+    name <span style='color:#0057ae;'>string</span>
+}
+
+<span style='color:#898887;'>//methods , functions acting on context (any type,eg structs)</span>
+<span style='color:#898887;'>//here the struct greeter is copied and we can access the fields</span>
+<span style='color:#898887;'>//we cannot access the struct itself</span>
+<b>func</b> (g greeter) greet(){
+    fmt.Println(g.greeting,g.name)
+    g.name=<span style='color:#bf0303;'>&quot;Eddy&quot;</span>                         <span style='color:#898887;'>//no effect</span>
+}
+
+<span style='color:#898887;'>//pointer receiver</span>
+<b>func</b> (g *greeter) greet2(){
+    fmt.Println(g.greeting,g.name)
+    g.name=<span style='color:#bf0303;'>&quot;Emiel&quot;</span>                         <span style='color:#898887;'>//with effect</span>
+}
+
+<b>func</b> part12_beta(){
+    fmt.Println(<span style='color:#bf0303;'>&quot;part12_beta&quot;</span>)
+
+    h:=greeter {
+        greeting: <span style='color:#bf0303;'>&quot;Hello&quot;</span>,
+        name:<span style='color:#bf0303;'>&quot;Alain&quot;</span>,
+    }
+    <span style='color:#898887;'>//methods , functions acting on an value,here greeter </span>
+    h.greet()            <span style='color:#898887;'>//Alain</span>
+    h.greet()            <span style='color:#898887;'>//Alain</span>
+    h.greet2()           <span style='color:#898887;'>//Alain</span>
+    h.greet2()           <span style='color:#898887;'>//Emiel</span>
+}
+
+<b>func</b> part12_functions() {
+    part12_alpha()
+    part12_beta()
+}
+
+<span style='color:#898887;'>//definition , it takes a slice of bytes and write to something returning bytes written</span>
+<span style='color:#898887;'>//naming convention is method name, here Write + er = Writer</span>
+<b>type</b> Writer <b>interface</b> {
+    Write([]<span style='color:#0057ae;'>byte</span>) (<span style='color:#0057ae;'>int</span>,<span style='color:#0057ae;'>error</span>)
+}
+
+<span style='color:#898887;'>//implicit implement , a struct </span>
+<b>type</b> ConsoleWriter <b>struct</b> {}
+
+<span style='color:#898887;'>//Print to console </span>
+<b>func</b> (cw ConsoleWriter) Write(data []<span style='color:#0057ae;'>byte</span>)(<span style='color:#0057ae;'>int</span>,<span style='color:#0057ae;'>error</span>){
+    n,err := fmt.Println(<span style='color:#0057ae;'>string</span>(data))
+    <b>return</b> n,err 
+}
+
+<b>func</b> part13_writer() {
+    fmt.Println(<span style='color:#bf0303;'>&quot;part13_writer&quot;</span>)
+
+<span style='color:#898887;'>// interfaces store behaviours, method definitions</span>
+<span style='color:#898887;'>// w is something that implements the writer interface </span>
+    <b>var</b> w Writer=ConsoleWriter{}
+<span style='color:#898887;'>// Polymorphic behaviour, w could be TcpWriter ...</span>
+    w.Write([]<span style='color:#0057ae;'>byte</span>(<span style='color:#bf0303;'>&quot;Interface &quot;</span>))
+}
+
+
+<b>type</b> Incrementer <b>interface</b> {
+    Increment() <span style='color:#0057ae;'>int</span> 
+}
+
+<span style='color:#898887;'>//type alias</span>
+<b>type</b> IntCounter <span style='color:#0057ae;'>int</span>
+
+<span style='color:#898887;'>//implementation for the interface </span>
+<b>func</b> (ic *IntCounter) Increment() <span style='color:#0057ae;'>int</span> {
+    (*ic)=(*ic)+<span style='color:#b08000;'>1</span>
+    <b>return</b> <span style='color:#0057ae;'>int</span>(*ic)
+}
+
+<b>func</b> part13_incrementer(){
+    fmt.Println(<span style='color:#bf0303;'>&quot;part13_incrementer&quot;</span>)
+
+    myInt:=IntCounter(<span style='color:#b08000;'>0</span>)
+    <b>var</b> inc Incrementer=&amp;myInt
+    <b>for</b> i:=<span style='color:#b08000;'>0</span>;i&lt;<span style='color:#b08000;'>3</span>;i++ {
+        fmt.Println(inc.Increment())
+    }
+}    
+
+<b>type</b> Writer2 <b>interface</b> {
+    Write([]<span style='color:#0057ae;'>byte</span>) (<span style='color:#0057ae;'>int</span>,<span style='color:#0057ae;'>error</span>)
+    
+}
+
+<b>type</b> Closer2 <b>interface</b> {
+    Close() <span style='color:#0057ae;'>error</span>
+}
+
+<b>type</b> WriterCloser2 <b>interface</b>{
+    Writer2
+    Closer2 
+}
+
+<b>type</b> myWriterCloser2 <b>struct</b> {
+}
+
+<b>func</b>(mwc myWriterCloser2) Write(data[] <span style='color:#0057ae;'>byte</span>) (<span style='color:#0057ae;'>int</span>,<span style='color:#0057ae;'>error</span>){
+    <b>return</b> <span style='color:#b08000;'>0</span>,<span style='color:#006e28;'>nil</span>
+}
+
+<b>func</b>(mwc myWriterCloser2) Close() <span style='color:#0057ae;'>error</span>{
+    <b>return</b> <span style='color:#006e28;'>nil</span>
+}
+
+<span style='color:#898887;'>// //        {........}</span>
+<span style='color:#898887;'>// Constructor</span>
+<span style='color:#898887;'>// func NewconsoleWriterCloser() *consoleWriterCloser</span>
+<span style='color:#898887;'>//        {........}</span>
+
+<b>func</b> part13_compose(){
+    fmt.Println(<span style='color:#bf0303;'>&quot;part13_compose&quot;</span>)
+
+    <span style='color:#898887;'>// all func( X myWriterCloser2)</span>
+    <b>var</b> wc WriterCloser2=myWriterCloser2{}
+    wc.Write([]<span style='color:#0057ae;'>byte</span>(<span style='color:#bf0303;'>&quot;Hallo&quot;</span>))
+    wc.Close()
+    fmt.Println(wc)
+
+    <span style='color:#898887;'>// all func( X myWriterCloser2) and func( X *myWriterCloser2)</span>
+    <b>var</b> pwc WriterCloser2=&amp;myWriterCloser2{}
+    pwc.Write([]<span style='color:#0057ae;'>byte</span>(<span style='color:#bf0303;'>&quot;Hallo&quot;</span>))
+    pwc.Close()
+    fmt.Println(pwc)
+    
+<span style='color:#898887;'>//INTERFACE_CONVERSION_TO_ACCESS_INTERNAL_STRUCTURE</span>
+<span style='color:#898887;'>//  wc3:=wc.(*consoleWriterCloser)</span>
+}
+
+<b>func</b> part13_interfaces() {
+    part13_writer()
+    part13_incrementer()
+    part13_compose()
+    
+    <span style='color:#898887;'>//empty interface , an interface with no methods, usefull for &quot;type conversion&quot;</span>
+    <b>var</b> ei <b>interface</b>{}
+    
+    ei=<span style='color:#b08000;'>0</span>
+    <b>switch</b> ei.(<b>type</b>){
+        <b>case</b> <span style='color:#0057ae;'>string</span>:
+            fmt.Println(<span style='color:#bf0303;'>&quot;ei is a string&quot;</span>)
+        <b>case</b> <span style='color:#0057ae;'>int</span>:
+            fmt.Println(<span style='color:#bf0303;'>&quot;ei is an integer&quot;</span>)
+    }
+    
+    ei=<span style='color:#bf0303;'>&quot;alain&quot;</span>
+    <b>switch</b> ei.(<b>type</b>){
+        <b>case</b> <span style='color:#0057ae;'>string</span>:
+            fmt.Println(<span style='color:#bf0303;'>&quot;ei is a string&quot;</span>)
+        <b>case</b> <span style='color:#0057ae;'>int</span>:
+            fmt.Println(<span style='color:#bf0303;'>&quot;ei is an integer&quot;</span>)
+    }
+}
+
+<b>func</b> sayHello(){
+    fmt.Println(<span style='color:#bf0303;'>&quot;Hello&quot;</span>)
+}
+
+<span style='color:#898887;'>// Concurrent en parallel programming , use of many cors</span>
+<b>func</b> part14_alfa() {
+    fmt.Println(<span style='color:#bf0303;'>&quot;part14_alpha&quot;</span>)
+
+    <span style='color:#898887;'>//spin greenthread , no os thread but lightweigth thread </span>
+    <span style='color:#898887;'>// go routines are mapped to os threads , small stack spaces</span>
+    <b>go</b> sayHello()                <span style='color:#898887;'>//spawned thread </span>
+    time.Sleep(<span style='color:#b08000;'>100</span>*time.Millisecond)
+    
+    <span style='color:#898887;'>//anonymous</span>
+    <b>var</b> msg=<span style='color:#bf0303;'>&quot;Hallo&quot;</span>
+    <b>go</b> <b>func</b>() {
+        time.Sleep(<span style='color:#b08000;'>10</span>*time.Millisecond)
+        fmt.Println(msg)   <span style='color:#898887;'>//prints goodbye ,race, bad idea</span>
+    }()
+    
+    msg=<span style='color:#bf0303;'>&quot;Goodbye&quot;</span>
+    time.Sleep(<span style='color:#b08000;'>100</span>*time.Millisecond)
+
+    msg=<span style='color:#bf0303;'>&quot;Hallo&quot;</span>
+    <b>go</b> <b>func</b>(msg <span style='color:#0057ae;'>string</span>) {
+        time.Sleep(<span style='color:#b08000;'>10</span>*time.Millisecond)
+        fmt.Println(msg)   <span style='color:#898887;'>//prints hallo ,ok , a copy of msg </span>
+    }(msg)
+    msg=<span style='color:#bf0303;'>&quot;Goodbye&quot;</span>
+    time.Sleep(<span style='color:#b08000;'>100</span>*time.Millisecond)
+ }
+
+<b>var</b> wgb=sync.WaitGroup{}            <span style='color:#898887;'>// object of type waitgroup {}</span>
+
+<b>func</b> part14_beta() {
+    fmt.Println(<span style='color:#bf0303;'>&quot;part14_beta&quot;</span>)
+
+    msg:=<span style='color:#bf0303;'>&quot;Hallo</span><span style='color:#924c9d;'>\n</span><span style='color:#bf0303;'>&quot;</span>
+    wgb.Add(<span style='color:#b08000;'>1</span>)              <span style='color:#898887;'>//add 1</span>
+    <b>go</b> <b>func</b>(msg <span style='color:#0057ae;'>string</span>) {
+        fmt.Println(msg)   <span style='color:#898887;'>//prints hallo ,ok , a copy of msg</span>
+        wgb.Done()          <span style='color:#898887;'>// substract 1</span>
+    }(msg)
+    msg=<span style='color:#bf0303;'>&quot;Goodbye</span><span style='color:#924c9d;'>\n</span><span style='color:#bf0303;'>&quot;</span>
+    wgb.Wait()              <span style='color:#898887;'>//wait until 0</span>
+    msg=<span style='color:#bf0303;'>&quot;Gedaan</span><span style='color:#924c9d;'>\n</span><span style='color:#bf0303;'>&quot;</span>
+}
+
+<b>var</b> wg=sync.WaitGroup{}     <span style='color:#898887;'>//global</span>
+<b>var</b> counter=<span style='color:#b08000;'>0</span>
+<span style='color:#898887;'>// lock, protects code</span>
+<span style='color:#898887;'>// readwrite mutex, </span>
+<span style='color:#898887;'>//      - maximum one write at the same time</span>
+<span style='color:#898887;'>//      - if one is reading no one can write</span>
+<span style='color:#898887;'>//      - as many as possible read at the same time</span>
+<b>var</b> m=sync.RWMutex{}        
+
+<b>func</b> sayHellog (){
+    fmt.Printf(<span style='color:#bf0303;'>&quot;Hello #%v</span><span style='color:#924c9d;'>\n</span><span style='color:#bf0303;'>&quot;</span>,counter)
+    m.RUnlock()                        <span style='color:#898887;'>//Unlocks are done asynchronously</span>
+    wg.Done()                          <span style='color:#898887;'>// decrease the number of threads</span>
+}
+
+<b>func</b> increment(){
+    counter++
+    m.Unlock()                        <span style='color:#898887;'>//Unlocks are done asynchronously</span>
+    wg.Done()                         <span style='color:#898887;'>//decrease the number of threads</span>
+}
+
+<b>func</b> part14_gamma(){
+    fmt.Println(<span style='color:#bf0303;'>&quot;part14_gamma&quot;</span>)
+
+    fmt.Printf(<span style='color:#bf0303;'>&quot;Threads available: %v </span><span style='color:#924c9d;'>\n</span><span style='color:#bf0303;'>&quot;</span>,runtime.GOMAXPROCS(-<span style='color:#b08000;'>1</span>))         <span style='color:#898887;'>//8 os threads because of 8 cores</span>
+<span style='color:#898887;'>//    runtime.GOMAXPROCS(1)           // eg to avoid race conditions</span>
+    runtime.GOMAXPROCS(<span style='color:#b08000;'>4</span>)             <span style='color:#898887;'>// to map all go threads to 4 os threads     </span>
+    <b>for</b> i:=<span style='color:#b08000;'>0</span>;i&lt;<span style='color:#b08000;'>5</span>;i++{
+        wg.Add(<span style='color:#b08000;'>1</span>)                     <span style='color:#898887;'>// increase the number of threads</span>
+        m.RLock()                     <span style='color:#898887;'>// Locks are done in the main thread</span>
+        <b>go</b> sayHellog()
+        wg.Add(<span style='color:#b08000;'>1</span>)                     <span style='color:#898887;'>// increase the number of threads</span>
+        m.Lock()                      <span style='color:#898887;'>// Locks are done in the main thread    </span>
+        <b>go</b> increment()
+    }
+    wg.Wait()                         <span style='color:#898887;'>// wait until all threads done</span>
+}
+
+
+<b>func</b> part14_goroutines() {
+    part14_alfa()
+    part14_beta()
+    part14_gamma()
+}
+
+<b>var</b> wgc=sync.WaitGroup{}
+
+<span style='color:#898887;'>//to synchronise data between different go routines (threads)</span>
+<b>func</b> part15_alfa(){
+    fmt.Println(<span style='color:#bf0303;'>&quot;part15_alpha&quot;</span>)
+
+    <span style='color:#898887;'>//a channel to send integers</span>
+    ch:=<span style='color:#644a9b;'>make</span>(<b>chan</b> <span style='color:#0057ae;'>int</span>)         <span style='color:#898887;'>//int,datatype that flows through the channel</span>
+    <span style='color:#898887;'>//consumer of channel</span>
+    wgc.Add(<span style='color:#b08000;'>1</span>)                  
+    <b>go</b> <b>func</b>() {
+        i:= &lt;- ch
+        fmt.Println(i)
+        i=<span style='color:#b08000;'>1111</span>                 <span style='color:#898887;'>//changes the copy</span>
+        wgc.Done()              
+    }()
+    <span style='color:#898887;'>//provider of channel</span>
+    wgc.Add(<span style='color:#b08000;'>1</span>)                  
+    <b>go</b> <b>func</b>() {
+        ch &lt;- <span style='color:#b08000;'>42</span>                <span style='color:#898887;'>// copies the 42 before sending , arrow show direction of data flow</span>
+        wgc.Done()              
+    }()
+    <span style='color:#898887;'>//Wait until both done</span>
+    wgc.Wait()                 
+}
+
+<b>func</b> part15_beta(){
+    fmt.Println(<span style='color:#bf0303;'>&quot;part15_beta&quot;</span>)
+    <span style='color:#898887;'>//a channel to send integers</span>
+    ch:=<span style='color:#644a9b;'>make</span>(<b>chan</b> <span style='color:#0057ae;'>int</span>)
+    
+    <b>for</b> j:=<span style='color:#b08000;'>0</span>;j&lt;<span style='color:#b08000;'>5</span>;j++ {
+        <span style='color:#898887;'>//consumer of channel</span>
+        wgc.Add(<span style='color:#b08000;'>1</span>)                  
+        <b>go</b> <b>func</b>() {
+            i:= &lt;- ch
+            fmt.Println(i)
+            i=<span style='color:#b08000;'>1111</span>                 <span style='color:#898887;'>//changes the copy</span>
+            wgc.Done()              
+        }()
+        <span style='color:#898887;'>//provider of channel</span>
+        wgc.Add(<span style='color:#b08000;'>1</span>)                  
+        <b>go</b> <b>func</b>() {
+            <span style='color:#898887;'>// copies the 42 before sending , arrow show direction of data flow</span>
+            <span style='color:#898887;'>// Note it block until the channel is free, the channel is unbuffered</span>
+            ch &lt;- <span style='color:#b08000;'>42</span>                
+            wgc.Done()              
+        }()
+    }
+    <span style='color:#898887;'>//Wait until both done</span>
+    wgc.Wait()
+}
+
+<span style='color:#898887;'>// readwrite channel</span>
+<b>func</b> part15_gamma(){
+    fmt.Println(<span style='color:#bf0303;'>&quot;part15_gamma&quot;</span>)
+    <span style='color:#898887;'>//a channel to send integers</span>
+    ch:=<span style='color:#644a9b;'>make</span>(<b>chan</b> <span style='color:#0057ae;'>string</span>)
+    
+    <b>for</b> j:=<span style='color:#b08000;'>0</span>;j&lt;<span style='color:#b08000;'>5</span>;j++ {
+        wgc.Add(<span style='color:#b08000;'>1</span>)                  
+        <b>go</b> <b>func</b>() {
+            ina:= &lt;- ch
+            fmt.Println(ina)
+            ch &lt;- <span style='color:#bf0303;'>&quot;Second&quot;</span>
+            wgc.Done()              
+        }()
+        wgc.Add(<span style='color:#b08000;'>1</span>)                  
+        <b>go</b> <b>func</b>() {
+            ch &lt;- <span style='color:#bf0303;'>&quot;First&quot;</span> 
+            inb:= &lt;- ch
+            fmt.Println(inb)
+            wgc.Done()              
+        }()
+    }
+    <span style='color:#898887;'>//Wait until both done</span>
+    wgc.Wait()
+}
+
+<span style='color:#898887;'>//go routines, undirectional </span>
+<b>func</b> part15_delta(){
+    fmt.Println(<span style='color:#bf0303;'>&quot;part15_delta&quot;</span>)
+    <span style='color:#898887;'>//a channel to send integers</span>
+    ch:=<span style='color:#644a9b;'>make</span>(<b>chan</b> <span style='color:#0057ae;'>string</span>)
+    
+    wgc.Add(<span style='color:#b08000;'>1</span>)
+    <span style='color:#898887;'>//receive only channel</span>
+    <b>go</b> <b>func</b>(ch &lt;- <b>chan</b> <span style='color:#0057ae;'>string</span>) {       <span style='color:#898887;'>//cast of a bidirectional channel to a uniderectional</span>
+        ina:= &lt;- ch
+        fmt.Println(ina)
+        <span style='color:#898887;'>//ch &lt;- &quot;Second&quot; ,error</span>
+        wgc.Done()              
+    }(ch)
+    wgc.Add(<span style='color:#b08000;'>1</span>)
+    <span style='color:#898887;'>//send only channel </span>
+    <b>go</b> <b>func</b>(ch <b>chan</b>&lt;- <span style='color:#0057ae;'>string</span>) {
+        ch &lt;- <span style='color:#bf0303;'>&quot;First&quot;</span> 
+        <span style='color:#898887;'>//inb:= &lt;- ch ,error</span>
+        <span style='color:#898887;'>//fmt.Println(inb)</span>
+        wgc.Done()              
+    }(ch)
+    <span style='color:#898887;'>//Wait until both done</span>
+    wgc.Wait()
+}
+
+<span style='color:#898887;'>//buffered channels , if sender and receiver have other frequency</span>
+<b>func</b> part15_epsilon(){
+    fmt.Println(<span style='color:#bf0303;'>&quot;part15_epsilon&quot;</span>)
+    <span style='color:#898887;'>//a channel to receive 50 string</span>
+    ch:=<span style='color:#644a9b;'>make</span>(<b>chan</b> <span style='color:#0057ae;'>string</span>,<span style='color:#b08000;'>50</span>)
+    
+    wgc.Add(<span style='color:#b08000;'>1</span>)
+    <span style='color:#898887;'>//receive only channel</span>
+    <b>go</b> <b>func</b>(ch &lt;- <b>chan</b> <span style='color:#0057ae;'>string</span>) {       <span style='color:#898887;'>//cast of a bidirectional channel to a uniderectional</span>
+        <b>for</b> <span style='color:#006e28;'>true</span> {
+            i,ok := &lt;- ch
+
+            fmt.Printf(<span style='color:#bf0303;'>&quot;i: Type : %T, value : %v </span><span style='color:#924c9d;'>\n</span><span style='color:#bf0303;'>&quot;</span>,i,i)
+            fmt.Printf(<span style='color:#bf0303;'>&quot;ok: Type : %T, value : %v </span><span style='color:#924c9d;'>\n</span><span style='color:#bf0303;'>&quot;</span>,ok,ok)
+
+            <b>if</b> ! ok {
+                <b>break</b>
+            }
+
+            fmt.Println(<span style='color:#bf0303;'>&quot;Data:&quot;</span>,i)
+        }
+        wgc.Done()              
+    }(ch)
+    wgc.Add(<span style='color:#b08000;'>1</span>)
+    <span style='color:#898887;'>//send only channel </span>
+    <b>go</b> <b>func</b>(ch <b>chan</b>&lt;- <span style='color:#0057ae;'>string</span>) {
+        ch &lt;- <span style='color:#bf0303;'>&quot;First&quot;</span> 
+        ch &lt;- <span style='color:#bf0303;'>&quot;Second&quot;</span>
+        <span style='color:#644a9b;'>close</span>(ch)
+        wgc.Done()              
+    }(ch)
+    <span style='color:#898887;'>//Wait until both done</span>
+    wgc.Wait()
+}
+
+
+<b>type</b> logEntry <b>struct</b> {
+    time time.Time
+    severity <span style='color:#0057ae;'>string</span>
+    message <span style='color:#0057ae;'>string</span>
+}
+
+<b>var</b> logCh=<span style='color:#644a9b;'>make</span>(<b>chan</b> logEntry,<span style='color:#b08000;'>50</span>)
+<b>var</b> doneCh=<span style='color:#644a9b;'>make</span>(<b>chan</b> <b>struct</b>{})         <span style='color:#898887;'>// struct with no fields , signal only channel</span>
+
+<b>func</b> logger(){
+    <b>for</b> <span style='color:#006e28;'>true</span> {
+        <b>select</b> { <span style='color:#898887;'>//listen to two channels</span>
+            <b>case</b> entry:= &lt;- logCh:
+                fmt.Printf(<span style='color:#bf0303;'>&quot;%v - [%v] %v </span><span style='color:#924c9d;'>\n</span><span style='color:#bf0303;'>&quot;</span>,entry.time,entry.severity,entry.message)
+            <b>case</b> &lt;-doneCh:
+                fmt.Println(<span style='color:#bf0303;'>&quot;T'is gedaan&quot;</span>)
+                <b>break</b>
+        <span style='color:#898887;'>//  default:         // for nonblocking select</span>
+        } <span style='color:#898887;'>// select </span>
+    }<span style='color:#898887;'>//for</span>
+}<span style='color:#898887;'>//func</span>
+
+<b>const</b> (
+    alogInfo <span style='color:#0057ae;'>string</span> = <span style='color:#bf0303;'>&quot;INFO&quot;</span> ;
+    alogWarning <span style='color:#0057ae;'>string</span> = <span style='color:#bf0303;'>&quot;WARNING&quot;</span>    
+    alogError <span style='color:#0057ae;'>string</span> = <span style='color:#bf0303;'>&quot;ERROR&quot;</span>
+)
+
+<span style='color:#898887;'>//E.g :  logch:=make(chan string,50)</span>
+<span style='color:#898887;'>// select, listen to two channels, is normally blocking , it waits until something received</span>
+<span style='color:#898887;'>// For nonblocking add &quot;default:&quot; case</span>
+<b>func</b> part15_zeta(){
+    <b>go</b> logger()
+<span style='color:#898887;'>//Note : when you create a go routine, you should have a strategy on how to shut down this routine</span>
+<span style='color:#898887;'>//  defer func(){</span>
+<span style='color:#898887;'>//  close(logch)</span>
+<span style='color:#898887;'>//  }()</span>
+    logCh &lt;- logEntry{time.Now(),alogInfo,<span style='color:#bf0303;'>&quot;App is starting&quot;</span>}
+    logCh &lt;- logEntry{time.Now(),alogInfo,<span style='color:#bf0303;'>&quot;App is shutting down&quot;</span>}
+    doneCh &lt;-<b>struct</b>{}{}          <span style='color:#898887;'>//struct{} initialised with {}</span>
+    time.Sleep(<span style='color:#b08000;'>100</span>*time.Millisecond)
+}
+
+
+<b>func</b> part15_channels() {
+    part15_alfa()
+    part15_beta()
+    part15_gamma()
+    part15_delta()
+    part15_epsilon()
+    part15_zeta()
+}
+
+
+<b>func</b> main(){
+    part3_variables()
+    part4_primitives()
+    part5_constants()
+    part6_arrays()
+    part7_maps()
+    part8_if()
+    part9_looping()
+    part10_defer()
+    part11_pointers()
+    part12_functions()
+    part13_interfaces()
+    part14_goroutines()
+    part15_channels()
+
+}</pre>
+</body>
+</html>
