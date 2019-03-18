@@ -1,0 +1,665 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Generator" content="Kate, the KDE Advanced Text Editor" />
+<title>t01.nim</title>
+</head>
+<body>
+<pre style='color:#1f1c1b;background-color:#ffffff;'>
+<span style='color:#898887;'>#import modules</span>
+<b>import</b> os<b>,</b>system<b>,</b>strutils<b>,</b>sequtils<b>,</b>math<b>,</b>times<b>,</b>sugar<b>,</b>parseutils
+<b>import</b> strfmt<b>,</b>times<b>,</b>locks<b>,</b>macros<b>,</b>json<b>,</b>algorithm<b>,</b>tables<b>,</b>sequtils
+<b>import</b> terminal
+
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Starting</span><span style='color:#bf0303;'>&quot;</span>
+
+<span style='color:#898887;'>#Comments</span>
+<span style='color:#898887;'>#This is a Comments</span>
+
+<span style='color:#898887;'>#[</span>
+<span style='color:#898887;'>A </span>
+<span style='color:#898887;'>multine</span>
+<span style='color:#898887;'>comment</span>
+<span style='color:#898887;'>]#</span>
+
+<span style='color:#898887;'>#discard code</span>
+<span style='color:#0057ae;'>discard</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#bf0303;'>blablabla</span>
+<span style='color:#bf0303;'>blablabla</span>
+<span style='color:#bf0303;'>blablabla</span>
+<span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>&quot;</span>
+
+<span style='color:#898887;'>#echo,write </span>
+<span style='color:#0057ae;'>echo</span> <b>(</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Hallo</span><span style='color:#bf0303;'>&quot;</span><b>)</b>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Hallo</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#898887;'># First concatenating the strings and passing as single arg to echo</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#898887;'>$</span>100 <span style='color:#898887;'>&amp;</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>abc</span><span style='color:#bf0303;'>&quot;</span> <span style='color:#898887;'>&amp;</span> <span style='color:#898887;'>$</span>2<span style='color:#b08000;'>.</span><span style='color:#b08000;'>5</span>
+<span style='color:#898887;'># Passing multiple args to echo, and letting echo &quot;concatenate&quot; them</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#b08000;'>100</span><b>,</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>abc</span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#b08000;'>2</span><span style='color:#b08000;'>.</span><span style='color:#b08000;'>5</span>
+stdout<b>.</b><span style='color:#0057ae;'>writeLine</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Hello World!</span><span style='color:#bf0303;'>&quot;</span>
+stdout<b>.</b><span style='color:#0057ae;'>write</span>     <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Hello World!</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#0057ae;'>setBackGroundColor</span><b>(</b>bgGreen<b>)</b>
+stdout<b>.</b><span style='color:#0057ae;'>styledWrite</span><b>(</b>fgRed<b>,</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>red text </span><span style='color:#bf0303;'>&quot;</span><b>)</b> 
+<span style='color:#0057ae;'>resetAttributes</span><b>()</b>
+
+<span style='color:#898887;'>#Mutable variables</span>
+<b>var</b>
+    a<b>:</b><span style='color:#0057ae;'>int</span><span style='color:#898887;'>=</span><span style='color:#b08000;'>1</span>
+    <span style='color:#898887;'>#type inferred</span>
+    b<span style='color:#898887;'>=</span>a
+    a1<b>:</b> <span style='color:#0057ae;'>int8</span> <span style='color:#898887;'>=</span> <span style='color:#b08000;'>0x7F</span> 
+    b1<b>:</b> <span style='color:#0057ae;'>uint8</span> <span style='color:#898887;'>=</span> <span style='color:#b08000;'>0b1111_1111</span>
+    c1<b>:</b> <span style='color:#0057ae;'>int64</span> <span style='color:#898887;'>=</span> <span style='color:#b08000;'>1</span>
+    d1<b>:</b> <span style='color:#0057ae;'>int</span> <span style='color:#898887;'>=</span> <span style='color:#b08000;'>0xFF</span> 
+    
+<span style='color:#898887;'>#Immutable variables,computed at compile time</span>
+<b>const</b>
+    c<b>:</b><span style='color:#0057ae;'>int</span><span style='color:#898887;'>=</span><span style='color:#b08000;'>2</span>
+    <span style='color:#898887;'>#type inferred </span>
+    d<span style='color:#898887;'>=</span>c
+    
+<span style='color:#898887;'>#Immutable variables,computed at run time</span>
+<b>let</b>
+    e<b>:</b><span style='color:#0057ae;'>int</span><span style='color:#898887;'>=</span><span style='color:#b08000;'>3</span>
+    <span style='color:#898887;'>#type inferred</span>
+    f<span style='color:#898887;'>=</span>a<span style='color:#898887;'>+</span>c<span style='color:#898887;'>+</span><span style='color:#0057ae;'>e</span> 
+<span style='color:#898887;'>#integer division</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>5 div 2=</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#b08000;'>5</span> <span style='color:#898887;'>div</span> <span style='color:#b08000;'>2</span>
+<span style='color:#898887;'>#Float division</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>5/2=</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#b08000;'>5</span><span style='color:#898887;'>/</span><span style='color:#b08000;'>2</span>
+<span style='color:#898887;'>#An integer</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>An integer:</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#b08000;'>9</span>_200_000_000_000_000_000
+<span style='color:#898887;'>#Shift</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>shift:</span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#b08000;'>1</span><b>.</b><span style='color:#0057ae;'>uint</span><b>.</b><span style='color:#0057ae;'>shl</span><b>(</b><span style='color:#b08000;'>2</span><b>)</b>
+<span style='color:#898887;'>#A float</span>
+<b>var</b> 
+    g<b>:</b><span style='color:#0057ae;'>float</span><span style='color:#898887;'>=</span> <span style='color:#898887;'>-</span><span style='color:#b08000;'>3</span><span style='color:#b08000;'>.</span><span style='color:#b08000;'>5</span>
+    h<span style='color:#898887;'>=</span> <span style='color:#898887;'>-</span><span style='color:#b08000;'>4</span><span style='color:#b08000;'>.</span><span style='color:#b08000;'>5</span>
+
+<span style='color:#898887;'>#subranges</span>
+<b>type</b>
+    dieFaces<span style='color:#898887;'>=</span>range<b>[</b><span style='color:#b08000;'>1</span><b>..</b><span style='color:#b08000;'>6</span><b>]</b>
+<b>var</b>
+    adie<b>:</b>dieFaces<span style='color:#898887;'>=</span><span style='color:#b08000;'>3</span>
+
+<span style='color:#898887;'>#Conversion</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Conversion (i.e. drop fraction):</span><span style='color:#bf0303;'>&quot;</span><b>,</b>h<b>.</b><span style='color:#0057ae;'>int</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Conversion:</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#0057ae;'>int</span><b>(</b>h<b>)</b>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Conversion</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>1234</span><span style='color:#bf0303;'>&quot;</span><b>.</b><span style='color:#0057ae;'>parseInt</span><b>()</b>
+
+<span style='color:#898887;'>#Stupid naming convention</span>
+<b>var</b>
+    aa<span style='color:#898887;'>=</span><span style='color:#b08000;'>2</span>
+b<span style='color:#898887;'>=</span>aa<span style='color:#898887;'>+</span>aA<span style='color:#898887;'>+</span>a_a
+<span style='color:#0057ae;'>echo</span> b
+
+<span style='color:#898887;'>#enums &amp; ordinals</span>
+<b>type</b>
+<span style='color:#898887;'>#Unique no prefix needed</span>
+    <span style='color:#0057ae;'>Compas</span><span style='color:#898887;'>=</span><b>enum</b>
+        north<b>,</b>east<b>,</b>south<b>,</b>west
+<span style='color:#898887;'>#Prefix needed when non unique</span>
+    <span style='color:#0057ae;'>Colors</span>{.pure.}<span style='color:#898887;'>=</span><b>enum</b>
+        <span style='color:#0057ae;'>Myred</span><span style='color:#898887;'>=</span><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>F00</span><span style='color:#bf0303;'>&quot;</span>
+        <span style='color:#0057ae;'>MyGreen</span><span style='color:#898887;'>=</span><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>0F0</span><span style='color:#bf0303;'>&quot;</span>
+        <span style='color:#0057ae;'>MyBlue</span><span style='color:#898887;'>=</span><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>00F</span><span style='color:#bf0303;'>&quot;</span>
+
+<span style='color:#898887;'>#var south:string=&quot;5&quot; :Error</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>ordinal:</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#0057ae;'>ord</span><b>(</b>south<b>)</b>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>ordinal:</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#0057ae;'>ord</span><b>(</b><span style='color:#0057ae;'>Compas</span><b>.</b><span style='color:#0057ae;'>south</span><b>)</b>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>ordinal:</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#0057ae;'>ord</span><b>(</b><span style='color:#0057ae;'>MyGreen</span><b>)</b>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>ordinal:</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#0057ae;'>ord</span><b>(</b><span style='color:#0057ae;'>Colors.MyGreen</span><b>)</b>
+<b>var</b> <span style='color:#0057ae;'>MyGreen</span><b>:</b><span style='color:#0057ae;'>string</span><span style='color:#898887;'>=</span><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>5</span><span style='color:#bf0303;'>&quot;</span>    <span style='color:#898887;'>#No error</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>ordinal:</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#0057ae;'>ord</span><b>(</b><span style='color:#0057ae;'>Colors.MyGreen</span><b>)</b>
+
+<span style='color:#898887;'>#Sets</span>
+<b>type </b><b><span style='color:#0057ae;'>persons</span></b><span style='color:#898887;'> =</span> <b>enum</b>
+    alain<b>,</b>eddy<b>,</b>emiel<b>,</b>helene
+<b>var</b> s8<b>:</b><span style='color:#0057ae;'>set</span><b>[</b>persons<b>]</b>
+s8<b>.</b><span style='color:#0057ae;'>incl</span> alain
+s8<b>.</b><span style='color:#0057ae;'>incl</span> eddy
+s8<b>.</b><span style='color:#0057ae;'>excl</span> eddy
+<span style='color:#0057ae;'>echo</span> s8<span style='color:#898887;'>+</span><b>{</b>emiel<b>,</b>helene<b>}</b>
+<span style='color:#0057ae;'>if</span> eddy <span style='color:#898887;'>in</span> s8<b>:</b>
+    <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>eddy in x</span><span style='color:#bf0303;'>&quot;</span>
+    
+<span style='color:#898887;'>#Char and string</span>
+<b>var</b>
+    cx<b>:</b><span style='color:#0057ae;'>char</span><span style='color:#898887;'>=</span><span style='color:#924c9d;'>'c'</span>
+    s1<b>:</b><span style='color:#0057ae;'>string</span><span style='color:#898887;'>=</span><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>astring</span><span style='color:#bf0303;'>&quot;</span>
+    s2<span style='color:#898887;'>=</span><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>bstring</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#898887;'>#Concatination</span>
+    s3<span style='color:#898887;'>=</span>s1 <span style='color:#898887;'>&amp;</span> s2
+<span style='color:#898887;'>#add</span>
+s3<b>.</b><span style='color:#0057ae;'>add</span><b>(</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>cstring</span><span style='color:#bf0303;'>&quot;</span><b>)</b>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>String:</span><span style='color:#bf0303;'>&quot;</span><b>,</b>s3
+
+<span style='color:#898887;'>#splitlines</span>
+<span style='color:#0057ae;'>for</span> aline <span style='color:#898887;'>in</span> <span style='color:#0057ae;'>splitLines</span><b>(</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>a</span>\n<span style='color:#bf0303;'>b</span>\n<span style='color:#bf0303;'>c</span>\n<span style='color:#bf0303;'>&quot;</span><b>):</b>
+    <span style='color:#0057ae;'>echo</span> aline
+
+<span style='color:#898887;'>#Multiline</span>
+<b>let</b> adoc<span style='color:#898887;'>=</span><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#bf0303;'>Ik</span>
+<span style='color:#bf0303;'>Ben</span>
+<span style='color:#bf0303;'>Veel</span>
+<span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#0057ae;'>echo</span> adoc
+
+<span style='color:#898887;'>#Boolean</span>
+<b>var</b>
+    y<span style='color:#898887;'>=</span><span style='color:#b08000;'>true</span>
+    n<span style='color:#898887;'>=</span><span style='color:#b08000;'>false</span>
+<span style='color:#898887;'>#relational</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>1==1:</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#b08000;'>1</span><span style='color:#898887;'>==</span><span style='color:#b08000;'>1</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>1!=1:</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#b08000;'>1</span><span style='color:#898887;'>!=</span><span style='color:#b08000;'>1</span>
+<span style='color:#898887;'>#logical</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>true and false:</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#b08000;'>true</span> <span style='color:#898887;'>and</span> <span style='color:#b08000;'>false</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>done</span><span style='color:#bf0303;'>&quot;</span>
+
+<span style='color:#898887;'>#If</span>
+<b>proc </b><b><span style='color:#bf0303;'>mytrue</span></b><b>():</b><span style='color:#0057ae;'>bool</span><span style='color:#898887;'>=</span>
+    <span style='color:#0057ae;'>return</span> <span style='color:#b08000;'>true</span>
+<b>var</b> x8<span style='color:#898887;'>=</span><span style='color:#0057ae;'>if</span> <span style='color:#0057ae;'>mytrue</span><b>():</b> <span style='color:#b08000;'>5</span>
+    <span style='color:#0057ae;'>else</span><b>:</b> <span style='color:#b08000;'>3</span>
+
+<span style='color:#898887;'>#array :homogenous container of a constant length</span>
+<b>type</b>
+  <span style='color:#0057ae;'>ThreeStringAddress</span> <span style='color:#898887;'>=</span> <span style='color:#0057ae;'>array</span><b>[</b><span style='color:#b08000;'>3</span><b>,</b> <span style='color:#0057ae;'>string</span><b>]</b>
+<b>var</b> names<b>:</b> <span style='color:#0057ae;'>ThreeStringAddress</span> <span style='color:#898887;'>=</span> <b>[</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Jasmine</span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Ktisztina</span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Kristof</span><span style='color:#bf0303;'>&quot;</span><b>]</b>
+
+<b>const</b> alen<b>:</b><span style='color:#0057ae;'>int</span><span style='color:#898887;'>=</span><span style='color:#b08000;'>3</span>
+<b>var</b> ar<b>:</b> <span style='color:#0057ae;'>array</span><b>[</b>alen<b>,</b><span style='color:#0057ae;'>int</span><b>]</b><span style='color:#898887;'>=</span><b>[</b><span style='color:#b08000;'>0</span><b>,</b><span style='color:#b08000;'>1</span><b>,</b><span style='color:#b08000;'>2</span><b>]</b>
+
+<span style='color:#898887;'>#Arrays are passed read-only</span>
+<b>proc </b><b><span style='color:#bf0303;'>foobar</span></b><b>(</b>z<b>:</b> <span style='color:#0057ae;'>array</span><b>[</b><span style='color:#b08000;'>0</span><b>..</b><span style='color:#b08000;'>3</span><b>,</b> <span style='color:#0057ae;'>int</span><b>])</b> <span style='color:#898887;'>=</span> 
+<span style='color:#898887;'>#    z[5] = 5  # Error: Cannot assign to z</span>
+    <span style='color:#0057ae;'>return</span>
+<span style='color:#0057ae;'>foobar</span><b>([</b><span style='color:#b08000;'>1</span><b>,</b> <span style='color:#b08000;'>2</span><b>,</b> <span style='color:#b08000;'>3</span><b>,</b> <span style='color:#b08000;'>4</span><b>])</b>
+
+<span style='color:#898887;'>#Lookup table</span>
+<b>type</b>
+  <span style='color:#0057ae;'>PartsOfSpeech</span> {.pure.} <span style='color:#898887;'>=</span> <b>enum</b>
+    <span style='color:#0057ae;'>Pronoun</span><b>,</b> <span style='color:#0057ae;'>Verb</span><b>,</b> <span style='color:#0057ae;'>Article</span><b>,</b> <span style='color:#0057ae;'>Adjective</span><b>,</b> <span style='color:#0057ae;'>Noun</span><b>,</b> <span style='color:#0057ae;'>Adverb</span>
+<b>var</b> partOfSpeechExamples<b>:</b> <span style='color:#0057ae;'>array</span><b>[</b><span style='color:#0057ae;'>PartsOfSpeech</span><b>,</b> <span style='color:#0057ae;'>string</span><b>]</b> <span style='color:#898887;'>=</span> <b>[</b>
+  <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>he</span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>reads</span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>the</span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>green</span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>book</span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>slowly</span><span style='color:#bf0303;'>&quot;</span>
+<b>]</b>
+<span style='color:#0057ae;'>echo</span> partOfSpeechExamples<b>[</b><span style='color:#0057ae;'>Adverb</span><b>]</b>
+
+<span style='color:#898887;'>#Matrix</span>
+<b>type</b>
+  <span style='color:#0057ae;'>Matrix</span><b>[</b><span style='color:#0057ae;'>W</span><b>,</b> <span style='color:#0057ae;'>H</span><b>:</b> <span style='color:#0057ae;'>static</span><b>[</b><span style='color:#0057ae;'>int</span><b>]]</b> <span style='color:#898887;'>=</span>
+    <span style='color:#0057ae;'>array</span><b>[</b><span style='color:#b08000;'>1</span><b>..</b><span style='color:#0057ae;'>W</span><b>,</b> <span style='color:#0057ae;'>array</span><b>[</b><span style='color:#b08000;'>1</span><b>..</b><span style='color:#0057ae;'>H</span><b>,</b> <span style='color:#0057ae;'>int</span><b>]]</b>
+
+<b>let</b> mat1<b>:</b> <span style='color:#0057ae;'>Matrix</span><b>[</b><span style='color:#b08000;'>2</span><b>,</b> <span style='color:#b08000;'>2</span><b>]</b> <span style='color:#898887;'>=</span> <b>[[</b><span style='color:#b08000;'>1</span><b>,</b> <span style='color:#b08000;'>0</span><b>],</b>
+                          <b>[</b><span style='color:#b08000;'>0</span><b>,</b> <span style='color:#b08000;'>1</span><b>]]</b>
+<b>let</b> mat2<b>:</b> <span style='color:#0057ae;'>Matrix</span><b>[</b><span style='color:#b08000;'>2</span><b>,</b> <span style='color:#b08000;'>2</span><b>]</b> <span style='color:#898887;'>=</span> <b>[[</b><span style='color:#b08000;'>0</span><b>,</b> <span style='color:#b08000;'>1</span><b>],</b>
+                          <b>[</b><span style='color:#b08000;'>1</span><b>,</b> <span style='color:#b08000;'>0</span><b>]]</b>
+
+<b>proc </b><b><span style='color:#bf0303;'>`+`</span></b><b>[</b><span style='color:#0057ae;'>W</span><b>,</b> <span style='color:#0057ae;'>H</span><b>](</b>a<b>,</b> b<b>:</b> <span style='color:#0057ae;'>Matrix</span><b>[</b><span style='color:#0057ae;'>W</span><b>,</b> <span style='color:#0057ae;'>H</span><b>]):</b>
+               <span style='color:#0057ae;'>Matrix</span><b>[</b><span style='color:#0057ae;'>W</span><b>,</b> <span style='color:#0057ae;'>H</span><b>]</b> <span style='color:#898887;'>=</span>
+  <span style='color:#0057ae;'>for</span> i <span style='color:#898887;'>in</span> <span style='color:#b08000;'>1</span><b>..</b><span style='color:#0057ae;'>high</span><b>(</b>a<b>):</b>
+    <span style='color:#0057ae;'>for</span> j <span style='color:#898887;'>in</span> <span style='color:#b08000;'>1</span><b>..</b><span style='color:#0057ae;'>high</span><b>(</b>a<b>[</b><span style='color:#b08000;'>0</span><b>]):</b>
+      <span style='color:#006e28;'>result</span><b>[</b>i<b>][</b>j<b>]</b> <span style='color:#898887;'>=</span> a<b>[</b>i<b>][</b>j<b>]</b> <span style='color:#898887;'>+</span> b<b>[</b>i<b>][</b>j<b>]</b>
+<span style='color:#0057ae;'>echo</span> mat1 <span style='color:#898887;'>+</span> mat2
+
+<b>proc </b><b><span style='color:#bf0303;'>`$`</span></b><b>(</b>a<b>:</b> <span style='color:#0057ae;'>array</span><b>[</b><span style='color:#b08000;'>2</span><b>,</b> <span style='color:#0057ae;'>array</span><b>[</b><span style='color:#b08000;'>2</span><b>,</b> <span style='color:#0057ae;'>int</span><b>]]):</b> <span style='color:#0057ae;'>string</span> <span style='color:#898887;'>=</span>
+    <span style='color:#006e28;'>result</span> <span style='color:#898887;'>=</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>&quot;</span>
+    <span style='color:#0057ae;'>for</span> v <span style='color:#898887;'>in</span> a<b>:</b>
+        <span style='color:#0057ae;'>for</span> vx <span style='color:#898887;'>in</span> v<b>:</b>
+          <span style='color:#006e28;'>result</span><b>.</b><span style='color:#0057ae;'>add</span><b>(</b><span style='color:#898887;'>$</span>vx <span style='color:#898887;'>&amp;</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>, </span><span style='color:#bf0303;'>&quot;</span><b>)</b>
+        <span style='color:#006e28;'>result</span><b>.</b><span style='color:#0057ae;'>add</span><b>(</b><span style='color:#bf0303;'>&quot;</span>\n<span style='color:#bf0303;'>&quot;</span><b>)</b>
+<span style='color:#0057ae;'>echo</span><b>([[</b><span style='color:#b08000;'>1</span><b>,</b> <span style='color:#b08000;'>2</span><b>],</b> <b>[</b><span style='color:#b08000;'>3</span><b>,</b> <span style='color:#b08000;'>4</span><b>]])</b>  <span style='color:#898887;'># See varargs for how echo works</span>
+
+<span style='color:#898887;'>#seq :homogenous container of a variable length,dynamicle expandable</span>
+<span style='color:#898887;'>#Allocated on the heap , not on the stack</span>
+<b>var</b> 
+    se<b>:</b>  <span style='color:#0057ae;'>seq</span><b>[</b><span style='color:#0057ae;'>int</span><b>]</b><span style='color:#898887;'>=</span> <span style='color:#0057ae;'>newSeq</span><b>[</b><span style='color:#0057ae;'>int</span><b>](</b><span style='color:#b08000;'>2</span><b>)</b>
+    sea<b>:</b> <span style='color:#0057ae;'>seq</span><b>[</b><span style='color:#0057ae;'>int</span><b>]</b> <span style='color:#898887;'>=</span> <span style='color:#898887;'>@</span><b>[]</b>
+    <span style='color:#0057ae;'>seb         </span>  <span style='color:#898887;'>=</span> <span style='color:#898887;'>@</span><b>[</b><span style='color:#b08000;'>1</span><b>,</b><span style='color:#b08000;'>2</span><b>,</b><span style='color:#b08000;'>3</span><b>]</b>
+    <span style='color:#0057ae;'>sec         </span>  <span style='color:#898887;'>=</span><span style='color:#0057ae;'>newSeq</span><b>[</b><span style='color:#0057ae;'>int</span><b>](</b><span style='color:#b08000;'>2</span><b>)</b>
+se<b>[</b><span style='color:#b08000;'>0</span><b>]</b><span style='color:#898887;'>=</span><span style='color:#0057ae;'>0</span> 
+se<b>[</b><span style='color:#b08000;'>1</span><b>]</b><span style='color:#898887;'>=</span><span style='color:#b08000;'>1</span>
+se<b>.</b><span style='color:#0057ae;'>add</span><b>(</b><span style='color:#b08000;'>2</span><b>)</b>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>seq:</span><span style='color:#bf0303;'>&quot;</span><b>,</b>se<b>,</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'> len:</span><span style='color:#bf0303;'>&quot;</span><b>,</b>se<b>.</b><span style='color:#0057ae;'>len</span> 
+<b>var</b>
+    se2<b>:</b><span style='color:#0057ae;'>seq</span><b>[</b><span style='color:#0057ae;'>int</span><b>]</b>
+se2<span style='color:#898887;'>=</span> <span style='color:#898887;'>@</span><b>[</b><span style='color:#b08000;'>0</span><b>,</b><span style='color:#b08000;'>1</span><b>,</b><span style='color:#b08000;'>2</span><b>,</b><span style='color:#b08000;'>3</span><b>,</b><span style='color:#b08000;'>4</span><b>,</b><span style='color:#b08000;'>5</span><b>,</b><span style='color:#b08000;'>6</span><b>,</b><span style='color:#b08000;'>7</span><b>,</b><span style='color:#b08000;'>8</span><b>,</b><span style='color:#b08000;'>9</span><b>]</b>
+<span style='color:#898887;'>#square se2</span>
+<span style='color:#0057ae;'>for</span> i<b>,</b>v <span style='color:#898887;'>in</span> se2<b>:</b>
+    se2<b>[</b>i<b>]</b><span style='color:#898887;'>=</span>v<span style='color:#898887;'>*</span>v
+<span style='color:#898887;'>#Remove first element (slow)</span>
+se2<b>.</b><span style='color:#0057ae;'>delete</span><b>(</b><span style='color:#b08000;'>0</span><b>)</b>
+<span style='color:#898887;'>#Add an element</span>
+se2 <span style='color:#898887;'>=</span> <span style='color:#b08000;'>0</span> <span style='color:#898887;'>&amp;</span> se2
+
+<span style='color:#898887;'>#index</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>index 2 from start:</span><span style='color:#bf0303;'>&quot;</span><b>,</b>se2<b>[</b><span style='color:#b08000;'>3</span><b>]</b>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>index 2 from end:</span><span style='color:#bf0303;'>&quot;</span><b>,</b>se2<b>[</b><span style='color:#898887;'>^</span><span style='color:#b08000;'>3</span><b>]</b>
+<span style='color:#898887;'>#slice</span>
+<span style='color:#0057ae;'>echo</span> se2<b>[</b><span style='color:#b08000;'>3</span><b>..</b><span style='color:#b08000;'>7</span><b>]</b>
+
+<span style='color:#898887;'>#List comprehension</span>
+<b>let</b> x <span style='color:#898887;'>=</span> <span style='color:#898887;'>@</span><b>[</b><span style='color:#b08000;'>1</span><b>,</b> <span style='color:#b08000;'>2</span><b>,</b> <span style='color:#b08000;'>3</span><b>,</b> <span style='color:#b08000;'>4</span><b>,</b> <span style='color:#b08000;'>5</span><b>,</b> <span style='color:#b08000;'>8</span><b>,</b> <span style='color:#b08000;'>8</span><b>,</b> <span style='color:#b08000;'>8</span><b>,</b> <span style='color:#b08000;'>10</span><b>]</b>  <span style='color:#898887;'># create a Nim sequence</span>
+<span style='color:#898887;'># syntax: lc[ item | ( item &lt;- seq, (optional condition) ), type ]</span>
+<span style='color:#0057ae;'>echo</span> lc<b>[</b> y<span style='color:#898887;'>*</span><span style='color:#b08000;'>2</span> <span style='color:#898887;'>|</span> <b>(</b> y <span style='color:#898887;'>&lt;-</span> <span style='color:#0057ae;'>x</span> <b>),</b> <span style='color:#0057ae;'>int</span> <b>]</b>
+
+<span style='color:#898887;'>#Tuple: Fixed size, heterogenous date</span>
+<b>var</b> 
+    at<span style='color:#898887;'>=</span><b>(</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>aaaa</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#b08000;'>2</span><b>,</b><span style='color:#b08000;'>3</span><span style='color:#b08000;'>.</span><span style='color:#b08000;'>5</span><b>)</b>
+<span style='color:#0057ae;'>echo</span> at
+
+<span style='color:#898887;'>#Tuple with field names</span>
+<span style='color:#898887;'>#Its a composition of named and typed fields in a specific order:</span>
+<b>type</b>
+  <span style='color:#0057ae;'>Person</span> <span style='color:#898887;'>=</span> <span style='color:#0057ae;'>tuple</span><b>[</b>name<b>:</b> <span style='color:#0057ae;'>string</span><b>,</b>size<b>:</b> <span style='color:#0057ae;'>int</span><b>,</b>length<b>:</b> <span style='color:#0057ae;'>float</span><b>]</b>
+<b>var</b>
+        aperson<b>:</b> <span style='color:#0057ae;'>Person</span>
+aperson<span style='color:#898887;'>=</span><b>(</b>name<b>:</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Alain</span><span style='color:#bf0303;'>&quot;</span><b>,</b>size<b>:</b><span style='color:#b08000;'>42</span><b>,</b>length<b>:</b><span style='color:#b08000;'>170</span><span style='color:#b08000;'>.</span><span style='color:#b08000;'>5</span><b>)</b>
+aperson<span style='color:#898887;'>=</span><b>(</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Alain</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#b08000;'>42</span><b>,</b><span style='color:#b08000;'>170</span><span style='color:#b08000;'>.</span><span style='color:#b08000;'>5</span><b>)</b>
+
+<b>var</b>
+        bperson<b>:</b> <span style='color:#0057ae;'>tuple</span><b>[</b>name<b>:</b> <span style='color:#0057ae;'>string</span><b>,</b>size<b>:</b> <span style='color:#0057ae;'>int</span><b>,</b>length<b>:</b> <span style='color:#0057ae;'>float</span><b>]</b>
+bperson<span style='color:#898887;'>=</span><b>(</b>name<b>:</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Alain</span><span style='color:#bf0303;'>&quot;</span><b>,</b>size<b>:</b><span style='color:#b08000;'>42</span><b>,</b>length<b>:</b><span style='color:#b08000;'>170</span><span style='color:#b08000;'>.</span><span style='color:#b08000;'>5</span><b>)</b>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>name:</span><span style='color:#bf0303;'>&quot;</span><b>,</b>aperson<b>.</b><span style='color:#0057ae;'>name</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>name:</span><span style='color:#bf0303;'>&quot;</span><b>,</b>bperson<b>[</b><span style='color:#b08000;'>0</span><b>]</b>
+
+<span style='color:#898887;'>#Table dictonaries</span>
+<b>var</b> a4 <span style='color:#898887;'>=</span> <b>{</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>hi</span><span style='color:#bf0303;'>&quot;</span><b>:</b> <span style='color:#b08000;'>1</span><b>,</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>there</span><span style='color:#bf0303;'>&quot;</span><b>:</b> <span style='color:#b08000;'>2</span><b>}.</b><span style='color:#0057ae;'>toTable</span>
+<span style='color:#0057ae;'>echo</span> a4<b>[</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>hi</span><span style='color:#bf0303;'>&quot;</span><b>],</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'> </span><span style='color:#bf0303;'>&quot;</span><b>,</b> a4<b>.</b><span style='color:#0057ae;'>len</span>
+<span style='color:#0057ae;'>assert</span> a4<b>.</b><span style='color:#0057ae;'>hasKey</span><b>(</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>hi</span><span style='color:#bf0303;'>&quot;</span><b>)</b>
+<span style='color:#0057ae;'>for</span> key<b>,</b> value <span style='color:#898887;'>in</span> a4<b>:</b>
+    <span style='color:#0057ae;'>echo</span> key<b>,</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'> </span><span style='color:#bf0303;'>&quot;</span> <b>,</b>value
+
+<span style='color:#898887;'>#type (OBJECTS)</span>
+<span style='color:#898887;'>#Objects support inheritance (not multiple inheritance).</span>
+
+<b>type</b>
+    myint<span style='color:#898887;'>=</span><span style='color:#0057ae;'>int</span>
+<b>var</b> 
+    aint<b>:</b>myint
+
+<b>type</b>
+    <span style='color:#0057ae;'>Animal</span><span style='color:#898887;'>=</span><b>object</b>
+        name<b>:</b><span style='color:#0057ae;'>string</span>
+        species<b>:</b><span style='color:#0057ae;'>string</span> 
+        age<b>:</b><span style='color:#0057ae;'>int</span>
+
+<b>proc </b><b><span style='color:#bf0303;'>sleep</span></b><b>(</b>a<b>:</b> <b>var</b> <span style='color:#0057ae;'>Animal</span><b>)</b><span style='color:#898887;'>=</span>
+    a<b>.</b><span style='color:#0057ae;'>age</span> <span style='color:#898887;'>=</span> a<b>.</b><span style='color:#0057ae;'>age</span><span style='color:#898887;'>+</span><span style='color:#b08000;'>1</span>
+    
+<b>var</b> carl<b>:</b><span style='color:#0057ae;'>Animal</span><span style='color:#898887;'>=</span><span style='color:#0057ae;'>Animal</span><b>(</b><span style='color:#0057ae;'>name</span> <b>:</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Carl</span><span style='color:#bf0303;'>&quot;</span><b>,</b>
+                       <span style='color:#0057ae;'>species</span> <b>:</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>L. glama</span><span style='color:#bf0303;'>&quot;</span><b>,</b>
+                       <span style='color:#0057ae;'>age</span> <b>:</b> <span style='color:#b08000;'>12</span>
+                      <b>)</b>
+carl<b>.</b><span style='color:#0057ae;'>sleep</span><b>()</b>
+
+<span style='color:#898887;'>#Example </span>
+<b>type </b><b><span style='color:#0057ae;'>Animal4</span></b><span style='color:#898887;'> =</span> <span style='color:#0057ae;'>ref</span> <b>object </b><b><span style='color:#0057ae;'>of</span></b><span style='color:#898887;'> </span><span style='color:#0057ae;'>RootObj</span>
+  age<b>:</b> <span style='color:#0057ae;'>int</span>
+  name<b>:</b> <span style='color:#0057ae;'>string</span>
+
+<b>type </b><b><span style='color:#0057ae;'>Cat4</span></b><span style='color:#898887;'> =</span> <span style='color:#0057ae;'>ref</span> <b>object </b><b><span style='color:#0057ae;'>of</span></b><span style='color:#898887;'> </span><span style='color:#0057ae;'>Animal4</span>
+  playfulness<b>:</b> <span style='color:#0057ae;'>float</span>
+
+<span style='color:#898887;'># A proc that can access and *modify* the object</span>
+<b>proc </b><b><span style='color:#bf0303;'>increase_age</span></b><b>(</b>self<b>:</b> <span style='color:#0057ae;'>Cat4</span><b>)</b> <span style='color:#898887;'>=</span>
+  self<b>.</b><span style='color:#0057ae;'>age</span><b>.</b><span style='color:#0057ae;'>inc</span><b>()</b>
+
+<b>var</b> c4 <span style='color:#898887;'>=</span> <span style='color:#0057ae;'>Cat4</span><b>(</b>name<b>:</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Tom</span><span style='color:#bf0303;'>&quot;</span><b>)</b>
+c4<b>.</b><span style='color:#0057ae;'>increase_age</span><b>()</b>
+<span style='color:#0057ae;'>echo</span> c4<b>.</b><span style='color:#0057ae;'>name</span><b>,</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'> </span><span style='color:#bf0303;'>&quot;</span><b>,</b> c4<b>.</b><span style='color:#0057ae;'>age</span>
+
+<span style='color:#898887;'>#Objects</span>
+<b>type</b>
+    <span style='color:#0057ae;'>FreakInt</span> <span style='color:#898887;'>=</span> <span style='color:#0057ae;'>distinct</span> <span style='color:#0057ae;'>int</span>
+<b>proc </b><b><span style='color:#bf0303;'>`*`</span></b><span style='color:#898887;'> </span><b>(</b>x<b>:</b> <span style='color:#0057ae;'>FreakInt</span><b>,</b> y<b>:</b> <span style='color:#0057ae;'>int</span><b>):</b> <span style='color:#0057ae;'>FreakInt</span> {.borrow.}
+<b>proc </b><b><span style='color:#bf0303;'>`+`</span></b><span style='color:#898887;'> </span><b>(</b>x<b>,</b> y<b>:</b> <span style='color:#0057ae;'>FreakInt</span><b>):</b> <span style='color:#0057ae;'>FreakInt</span> <span style='color:#898887;'>=</span>
+    <span style='color:#0057ae;'>FreakInt</span><b>((</b><span style='color:#0057ae;'>int</span><b>(</b>x<b>)</b> <span style='color:#898887;'>+</span> <span style='color:#0057ae;'>int</span><b>(</b>y<b>))</b> <span style='color:#898887;'>*</span> <span style='color:#b08000;'>2</span><b>)</b>
+
+<span style='color:#898887;'>#Safe reference type</span>
+<span style='color:#898887;'>#ref which is in fact also a pointer</span>
+<span style='color:#898887;'>#but its a friendlier one that does a bit </span>
+<span style='color:#898887;'>#of automatic allocation and especially deallocation for us using the garbage collector. </span>
+<span style='color:#898887;'>#They are allocated on the heap and not on the stack by use of the new() function</span>
+ 
+<b>let</b> jack<b>:</b> <span style='color:#0057ae;'>ref</span> <span style='color:#0057ae;'>Animal</span> <span style='color:#898887;'>=</span> <span style='color:#0057ae;'>new</span><b>(</b><span style='color:#0057ae;'>Animal</span><b>)</b>
+jack<b>[].</b><span style='color:#0057ae;'>name</span> <span style='color:#898887;'>=</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Mittens</span><span style='color:#bf0303;'>&quot;</span>
+jack<b>[].</b><span style='color:#0057ae;'>species</span> <span style='color:#898887;'>=</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>P. leo</span><span style='color:#bf0303;'>&quot;</span>
+jack<b>[].</b><span style='color:#0057ae;'>age</span> <span style='color:#898887;'>=</span> <span style='color:#b08000;'>6</span>
+jack<b>[].</b><span style='color:#0057ae;'>sleep</span><b>()</b>
+<span style='color:#898887;'>#Derence operator [] can be left out for accesing values</span>
+jack<b>.</b><span style='color:#0057ae;'>name</span> <span style='color:#898887;'>=</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Mittens</span><span style='color:#bf0303;'>&quot;</span>
+jack<b>.</b><span style='color:#0057ae;'>species</span> <span style='color:#898887;'>=</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>P. leo</span><span style='color:#bf0303;'>&quot;</span>
+jack<b>.</b><span style='color:#0057ae;'>age</span> <span style='color:#898887;'>=</span> <span style='color:#b08000;'>6</span>
+<span style='color:#898887;'>#Or:</span>
+<b>type</b>
+    <span style='color:#0057ae;'>AnimalRef</span> <span style='color:#898887;'>=</span> <span style='color:#0057ae;'>ref</span> <span style='color:#0057ae;'>Animal</span>
+<b>let</b> joe <span style='color:#898887;'>=</span> <span style='color:#0057ae;'>AnimalRef</span><b>(</b>name<b>:</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Spot</span><span style='color:#bf0303;'>&quot;</span><b>,</b>
+                    species<b>:</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>C. lupus</span><span style='color:#bf0303;'>&quot;</span><b>,</b>
+                    age<b>:</b> <span style='color:#b08000;'>1</span>
+                   <b>)</b>
+joe<b>[].</b><span style='color:#0057ae;'>sleep</span><b>()</b>
+
+<span style='color:#898887;'>#Unsafe reference type</span>
+<b>var</b> x3<b>:</b><span style='color:#0057ae;'>int</span><span style='color:#898887;'>=</span><span style='color:#b08000;'>3</span>
+<b>var</b> px<span style='color:#898887;'>=addr</span> x3
+<span style='color:#0057ae;'>echo</span> px<b>[]</b>
+<b>var</b> y3<span style='color:#898887;'>=</span> <span style='color:#0057ae;'>cast</span><b>[</b><span style='color:#0057ae;'>ptr</span> <span style='color:#0057ae;'>int</span><b>](</b>px<b>)[]</b>
+<span style='color:#0057ae;'>echo</span> y
+px<span style='color:#898887;'>=</span><span style='color:#b08000;'>nil</span>
+
+<span style='color:#898887;'>#Reference to any object</span>
+<b>type</b>
+    thing <span style='color:#898887;'>=</span> <span style='color:#0057ae;'>ref</span> <b>object</b>
+
+<span style='color:#898887;'>#argument passed by reference</span>
+<b>proc </b><b><span style='color:#bf0303;'>addone</span></b><b>(</b>a<b>:</b> <b>var</b> <span style='color:#0057ae;'>int</span><b>):</b><span style='color:#0057ae;'>int</span><span style='color:#898887;'>=</span>
+    a<span style='color:#898887;'>=</span>a<span style='color:#898887;'>+</span><span style='color:#b08000;'>1</span>
+    <span style='color:#0057ae;'>return</span> a
+<b>var</b>
+    r<b>:</b><span style='color:#0057ae;'>int</span> <span style='color:#898887;'>=</span><span style='color:#b08000;'>1</span>
+    rr<b>:</b><span style='color:#0057ae;'>int</span>
+rr<span style='color:#898887;'>=</span><span style='color:#0057ae;'>addone</span><b>(</b>r<b>)</b>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>addone(r):</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#0057ae;'>addone</span><b>(</b>r<b>)</b>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>addone(r):</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#0057ae;'>addone</span><b>(</b>r<b>)</b>
+
+<span style='color:#898887;'>#Object orientation and inheritance</span>
+<b>type </b><b><span style='color:#0057ae;'>Animal2</span></b><span style='color:#898887;'> =</span> <span style='color:#0057ae;'>ref</span> <b>object </b><b><span style='color:#0057ae;'>of</span></b><span style='color:#898887;'> </span><span style='color:#0057ae;'>RootObj</span>
+  name<b>:</b> <span style='color:#0057ae;'>string</span>
+  age<b>:</b> <span style='color:#0057ae;'>int</span>
+<b>method </b><b><span style='color:#bf0303;'>vocalize</span></b><b>(</b>this<b>:</b> <span style='color:#0057ae;'>Animal2</span><b>):</b> <span style='color:#0057ae;'>string</span> {.base.} <span style='color:#898887;'>=</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>...</span><span style='color:#bf0303;'>&quot;</span>
+<b>method </b><b><span style='color:#bf0303;'>ageHumanYrs</span></b><b>(</b>this<b>:</b> <span style='color:#0057ae;'>Animal2</span><b>):</b> <span style='color:#0057ae;'>int</span> {.base.} <span style='color:#898887;'>=</span> this<b>.</b><span style='color:#0057ae;'>age</span>
+
+<b>type </b><b><span style='color:#0057ae;'>Dog</span></b><span style='color:#898887;'> =</span> <span style='color:#0057ae;'>ref</span> <b>object </b><b><span style='color:#0057ae;'>of</span></b><span style='color:#898887;'> </span><span style='color:#0057ae;'>Animal2</span>
+<b>method </b><b><span style='color:#bf0303;'>vocalize</span></b><b>(</b>this<b>:</b> <span style='color:#0057ae;'>Dog</span><b>):</b> <span style='color:#0057ae;'>string</span> <span style='color:#898887;'>=</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>woof</span><span style='color:#bf0303;'>&quot;</span>
+<b>method </b><b><span style='color:#bf0303;'>ageHumanYrs</span></b><b>(</b>this<b>:</b> <span style='color:#0057ae;'>Dog</span><b>):</b> <span style='color:#0057ae;'>int</span> <span style='color:#898887;'>=</span> this<b>.</b><span style='color:#0057ae;'>age</span> <span style='color:#898887;'>*</span> <span style='color:#b08000;'>7</span>
+
+<b>type </b><b><span style='color:#0057ae;'>Cat</span></b><span style='color:#898887;'> =</span> <span style='color:#0057ae;'>ref</span> <b>object </b><b><span style='color:#0057ae;'>of</span></b><span style='color:#898887;'> </span><span style='color:#0057ae;'>Animal2</span>
+<b>method </b><b><span style='color:#bf0303;'>vocalize</span></b><b>(</b>this<b>:</b> <span style='color:#0057ae;'>Cat</span><b>):</b> <span style='color:#0057ae;'>string</span> <span style='color:#898887;'>=</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>meow</span><span style='color:#bf0303;'>&quot;</span>
+
+<b>var</b> animals<b>:</b> <span style='color:#0057ae;'>seq</span><b>[</b><span style='color:#0057ae;'>Animal2</span><b>]</b> <span style='color:#898887;'>=</span> <span style='color:#898887;'>@</span><b>[]</b>
+animals<b>.</b><span style='color:#0057ae;'>add</span><b>(</b><span style='color:#0057ae;'>Dog</span><b>(</b>name<b>:</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Sparky</span><span style='color:#bf0303;'>&quot;</span><b>,</b> age<b>:</b> <span style='color:#b08000;'>10</span><b>))</b>
+animals<b>.</b><span style='color:#0057ae;'>add</span><b>(</b><span style='color:#0057ae;'>Cat</span><b>(</b>name<b>:</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Mitten</span><span style='color:#bf0303;'>&quot;</span><b>,</b> age<b>:</b> <span style='color:#b08000;'>10</span><b>))</b>
+
+<span style='color:#0057ae;'>for</span> a <span style='color:#898887;'>in</span> animals<b>:</b>
+  <span style='color:#0057ae;'>echo</span> a<b>.</b><span style='color:#0057ae;'>vocalize</span><b>()</b>
+  <span style='color:#0057ae;'>echo</span> a<b>.</b><span style='color:#0057ae;'>ageHumanYrs</span><b>()</b>
+
+<span style='color:#898887;'>#Blocks</span>
+<span style='color:#0057ae;'>block</span> outer<b>:</b>
+    <b>var</b> aa<span style='color:#898887;'>=</span><span style='color:#b08000;'>1</span>
+    <span style='color:#0057ae;'>block</span> inner<b>:</b>
+        <b>var</b> bb<span style='color:#898887;'>=</span><span style='color:#b08000;'>1</span>
+        <span style='color:#0057ae;'>break</span> outer
+
+<span style='color:#898887;'>#Parenthesis, semicolon blocks</span>
+<span style='color:#0057ae;'>block</span> outer2<b>:(</b>
+    <b>var</b> aaa<span style='color:#898887;'>=</span><span style='color:#b08000;'>1</span><b>;</b>
+    <span style='color:#0057ae;'>block</span> inner2<b>:(</b>
+        <b>var</b> bbb<span style='color:#898887;'>=</span><span style='color:#b08000;'>1</span><b>;</b>
+    <b>)</b>
+<b>)</b>
+
+<span style='color:#898887;'>#Branch</span>
+<b>var</b> 
+    i<span style='color:#898887;'>=</span><span style='color:#b08000;'>5</span>
+    j<span style='color:#898887;'>=</span><span style='color:#b08000;'>5</span>
+<span style='color:#0057ae;'>if</span> i<span style='color:#898887;'>&lt;</span>j<b>:</b>
+    <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>i&lt;j</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#0057ae;'>elif</span> i<span style='color:#898887;'>&gt;</span>j<b>:</b>
+    <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>i&gt;j</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#0057ae;'>else</span><b>:</b>
+    <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>i=j</span><span style='color:#bf0303;'>&quot;</span>
+
+<span style='color:#0057ae;'>case</span> i
+<span style='color:#898887;'>of</span> <span style='color:#b08000;'>4</span><b>:</b>
+    <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>i=4</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#898887;'>of</span> <span style='color:#b08000;'>5</span><b>:</b>
+    <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>i=5</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#0057ae;'>else</span><b>:</b>
+    <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>i is not 4 or 5</span><span style='color:#bf0303;'>&quot;</span>
+
+<span style='color:#0057ae;'>case</span> i<b>:</b>
+<span style='color:#898887;'>of</span> <span style='color:#b08000;'>4</span><b>,</b><span style='color:#b08000;'>5</span><b>:</b>
+    <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>i is 4 or 5</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#0057ae;'>else</span><b>:</b> <span style='color:#0057ae;'>discard</span>
+<span style='color:#898887;'>#loops</span>
+<span style='color:#0057ae;'>for</span> n <span style='color:#898887;'>in</span> <span style='color:#b08000;'>0</span><b>..</b><span style='color:#b08000;'>9</span><b>:</b>
+    <span style='color:#0057ae;'>echo</span> n
+
+<span style='color:#0057ae;'>for</span> n <span style='color:#898887;'>in</span> <span style='color:#b08000;'>0</span><b>..</b><span style='color:#898887;'>&lt;</span><span style='color:#b08000;'>10</span><b>:</b>
+    <span style='color:#0057ae;'>echo</span> n
+
+<span style='color:#0057ae;'>for</span> n <span style='color:#898887;'>in</span> <span style='color:#0057ae;'>countup</span><b>(</b><span style='color:#b08000;'>0</span><b>,</b><span style='color:#b08000;'>9</span><b>,</b><span style='color:#b08000;'>1</span><b>):</b>
+    <span style='color:#0057ae;'>echo</span> n
+
+<span style='color:#0057ae;'>for</span> n <span style='color:#898887;'>in</span> <span style='color:#0057ae;'>countdown</span><b>(</b><span style='color:#b08000;'>9</span><b>,</b><span style='color:#b08000;'>0</span><b>,</b><span style='color:#b08000;'>1</span><b>):</b>
+    <span style='color:#0057ae;'>echo</span> n
+
+<b>var</b> t<span style='color:#898887;'>=</span><span style='color:#b08000;'>0</span>
+<span style='color:#0057ae;'>while</span> t<span style='color:#898887;'>&lt;</span><span style='color:#b08000;'>10</span><b>:</b>
+    <span style='color:#0057ae;'>echo</span> t
+    t<span style='color:#898887;'>=</span>t<span style='color:#898887;'>+</span><span style='color:#b08000;'>1</span>
+
+t<span style='color:#898887;'>=</span><span style='color:#0057ae;'>0   </span> 
+<span style='color:#0057ae;'>while</span> <span style='color:#b08000;'>true</span><b>:</b>
+    <span style='color:#0057ae;'>if</span> t<span style='color:#898887;'>==</span><span style='color:#b08000;'>10</span><b>:</b>
+        <span style='color:#0057ae;'>break</span>
+    t<b>.</b><span style='color:#0057ae;'>inc</span>
+
+<span style='color:#0057ae;'>for</span> t <span style='color:#898887;'>in</span> <span style='color:#898887;'>-</span><span style='color:#b08000;'>10</span><b>..</b><span style='color:#b08000;'>10</span><b>:</b>
+    <span style='color:#0057ae;'>if</span> <span style='color:#898887;'>not</span><b>(</b>t <span style='color:#898887;'>in</span> <span style='color:#b08000;'>0</span><b>..</b><span style='color:#b08000;'>9</span><b>):</b>
+        <span style='color:#0057ae;'>continue</span>
+    <span style='color:#0057ae;'>echo</span> t
+
+<span style='color:#898887;'>#function: Procedure with no side effects</span>
+<span style='color:#898887;'>#Procedure:</span>
+<b>proc </b><b><span style='color:#bf0303;'>mymax</span></b><b>(</b>x<b>:</b><span style='color:#0057ae;'>int</span><b>,</b>y<b>:</b><span style='color:#0057ae;'>int</span><b>):</b><span style='color:#0057ae;'>int</span><span style='color:#898887;'>=</span>
+    <span style='color:#0057ae;'>if</span> x<span style='color:#898887;'>&gt;</span>y<b>:</b>
+        <span style='color:#0057ae;'>return</span> x
+    <span style='color:#0057ae;'>else</span><b>:</b>
+        <span style='color:#0057ae;'>return</span> y
+<span style='color:#0057ae;'>echo</span> <span style='color:#0057ae;'>mymax</span><b>(</b><span style='color:#b08000;'>3</span><b>,</b><span style='color:#b08000;'>5</span><b>)</b>
+
+<b>proc </b><b><span style='color:#bf0303;'>printme</span></b><b>(</b>s<b>:</b><span style='color:#0057ae;'>string</span><b>)</b><span style='color:#898887;'>=</span>
+    <span style='color:#0057ae;'>echo</span> s
+<span style='color:#0057ae;'>printme</span><b>(</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Hallo</span><span style='color:#bf0303;'>&quot;</span><b>)</b>
+
+<b>proc </b><b><span style='color:#bf0303;'>changeme</span></b><b>(</b>i<b>:</b><b>var</b> <span style='color:#0057ae;'>int</span><b>)</b><span style='color:#898887;'>=</span>
+    i<span style='color:#898887;'>+=</span><span style='color:#b08000;'>1</span>
+    <span style='color:#0057ae;'>echo</span> i
+<b>var</b> tc<span style='color:#898887;'>=</span><span style='color:#b08000;'>5</span>
+<span style='color:#0057ae;'>changeme</span><b>(</b>tc<b>)</b>
+<span style='color:#0057ae;'>echo</span> tc
+
+<b>var</b> 
+    keep<b>:</b><span style='color:#0057ae;'>int</span><span style='color:#898887;'>=</span><span style='color:#b08000;'>1</span>
+<b>proc </b><b><span style='color:#bf0303;'>increasekeep</span></b><b>()</b><span style='color:#898887;'>=</span>
+    keep <span style='color:#898887;'>+=</span> <span style='color:#b08000;'>1</span>
+    <span style='color:#0057ae;'>echo</span> keep
+<span style='color:#0057ae;'>increasekeep</span><b>()</b>
+<span style='color:#0057ae;'>increasekeep</span><b>()</b>
+
+<span style='color:#898887;'>#Uniform function call syntax</span>
+<b>proc </b><b><span style='color:#bf0303;'>myplus</span></b><b>(</b>x<b>:</b><span style='color:#0057ae;'>int</span><b>,</b>y<b>:</b><span style='color:#0057ae;'>int</span><b>):</b><span style='color:#0057ae;'>int</span><span style='color:#898887;'>=</span>
+    <span style='color:#0057ae;'>return</span> x<span style='color:#898887;'>+</span>y
+<span style='color:#0057ae;'>echo</span> <span style='color:#0057ae;'>myplus</span><b>(</b><span style='color:#b08000;'>3</span><b>,</b><span style='color:#b08000;'>5</span><b>)</b>
+<span style='color:#0057ae;'>echo</span> <span style='color:#b08000;'>3</span><b>.</b><span style='color:#0057ae;'>myplus</span><b>(</b><span style='color:#b08000;'>5</span><b>)</b>
+
+<span style='color:#898887;'>#result : The result variable is a special variable that serves as an implicit return variable</span>
+<b>proc </b><b><span style='color:#bf0303;'>myreturnfive</span></b><b>():</b><span style='color:#0057ae;'>int</span><span style='color:#898887;'>=</span>
+    <span style='color:#006e28;'>result</span><span style='color:#898887;'>=</span><span style='color:#b08000;'>5</span>
+    <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Hallo</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#0057ae;'>myreturnfive</span><b>()</b>
+
+<b>proc </b><b><span style='color:#bf0303;'>keepOdds</span></b><b>(</b>a<b>:</b> <span style='color:#0057ae;'>array</span><b>[</b><span style='color:#b08000;'>7</span><b>,</b><span style='color:#0057ae;'>int</span><b>]):</b> <span style='color:#0057ae;'>seq</span><b>[</b><span style='color:#0057ae;'>int</span><b>]</b> <span style='color:#898887;'>=</span>
+    <span style='color:#006e28;'>result</span> <span style='color:#898887;'>=</span> <span style='color:#898887;'>@</span><b>[]</b>          
+    <span style='color:#0057ae;'>for</span> number <span style='color:#898887;'>in</span> a<b>:</b>
+        <span style='color:#0057ae;'>if</span> number <span style='color:#898887;'>mod</span> <span style='color:#b08000;'>2</span> <span style='color:#898887;'>==</span> <span style='color:#b08000;'>1</span><b>:</b>
+            <span style='color:#006e28;'>result</span><b>.</b><span style='color:#0057ae;'>add</span><b>(</b>number<b>)</b>
+<b>const</b> f2<b>:</b><span style='color:#0057ae;'>array</span><b>[</b><span style='color:#b08000;'>7</span><b>,</b><span style='color:#0057ae;'>int</span><b>]</b> <span style='color:#898887;'>=</span> <b>[</b><span style='color:#b08000;'>1</span><b>,</b> <span style='color:#b08000;'>6</span><b>,</b> <span style='color:#b08000;'>4</span><b>,</b> <span style='color:#b08000;'>43</span><b>,</b> <span style='color:#b08000;'>57</span><b>,</b> <span style='color:#b08000;'>34</span><b>,</b> <span style='color:#b08000;'>98</span><b>]</b>
+<span style='color:#0057ae;'>echo</span> <span style='color:#0057ae;'>keepOdds</span><b>(</b>f2<b>)</b>
+
+<span style='color:#898887;'>#Forward declaration</span>
+<b>proc </b><b><span style='color:#bf0303;'>plus</span></b><b>(</b>x<b>,</b> y<b>:</b> <span style='color:#0057ae;'>int</span><b>):</b> <span style='color:#0057ae;'>int</span>    
+<span style='color:#0057ae;'>echo</span> <span style='color:#b08000;'>5</span><b>.</b><span style='color:#0057ae;'>plus</span><b>(</b><span style='color:#b08000;'>10</span><b>)</b>              
+<b>proc </b><b><span style='color:#bf0303;'>plus</span></b><b>(</b>x<b>,</b> y<b>:</b> <span style='color:#0057ae;'>int</span><b>):</b> <span style='color:#0057ae;'>int</span> <span style='color:#898887;'>=</span>  
+    <span style='color:#0057ae;'>return</span> x <span style='color:#898887;'>+</span> y
+
+<span style='color:#898887;'>#No side effects functional programming</span>
+<b>proc </b><b><span style='color:#bf0303;'>sum</span></b><b>(</b>x<b>,</b> y<b>:</b> <span style='color:#0057ae;'>int</span><b>):</b> <span style='color:#0057ae;'>int</span> {. noSideEffect .} <span style='color:#898887;'>=</span>
+    x <span style='color:#898887;'>+</span> y
+
+<span style='color:#898887;'>#First class functions</span>
+<b>let</b> powersOfTwo <span style='color:#898887;'>=</span> <span style='color:#898887;'>@</span><b>[</b><span style='color:#b08000;'>1</span><b>,</b> <span style='color:#b08000;'>2</span><b>,</b> <span style='color:#b08000;'>4</span><b>,</b> <span style='color:#b08000;'>8</span><b>,</b> <span style='color:#b08000;'>16</span><b>,</b> <span style='color:#b08000;'>32</span><b>,</b> <span style='color:#b08000;'>64</span><b>,</b> <span style='color:#b08000;'>128</span><b>,</b> <span style='color:#b08000;'>256</span><b>]</b>
+<span style='color:#0057ae;'>echo</span><b>(</b>powersOfTwo<b>.</b><span style='color:#0057ae;'>filter</span> <span style='color:#0057ae;'>do</span> <b>(</b>x<b>:</b> <span style='color:#0057ae;'>int</span><b>)</b> <span style='color:#898887;'>-&gt;</span> <span style='color:#0057ae;'>bool</span><b>:</b> x <span style='color:#898887;'>&gt;</span> <span style='color:#b08000;'>32</span><b>)</b>
+<span style='color:#0057ae;'>echo</span> powersOfTwo<b>.</b><span style='color:#0057ae;'>filter</span><b>(</b><b>proc </b><b>(</b>x<b>:</b> <span style='color:#0057ae;'>int</span><b>):</b> <span style='color:#0057ae;'>bool</span> <span style='color:#898887;'>=</span> x <span style='color:#898887;'>&gt;</span> <span style='color:#b08000;'>32</span><b>)</b>
+
+<b>proc </b><b><span style='color:#bf0303;'>greaterThan32</span></b><b>(</b>x<b>:</b> <span style='color:#0057ae;'>int</span><b>):</b> <span style='color:#0057ae;'>bool</span> <span style='color:#898887;'>=</span> x <span style='color:#898887;'>&gt;</span> <span style='color:#b08000;'>32</span>
+<span style='color:#0057ae;'>echo</span> powersOfTwo<b>.</b><span style='color:#0057ae;'>filter</span><b>(</b>greaterThan32<b>)</b>
+
+<span style='color:#898887;'>#Sugar '-&gt;' macro</span>
+<b>proc </b><b><span style='color:#bf0303;'>map</span></b><b>(</b>str<b>:</b> <span style='color:#0057ae;'>string</span><b>,</b> fun<b>:</b> <b>(</b><span style='color:#0057ae;'>char</span><b>)</b> <span style='color:#898887;'>-&gt;</span> <span style='color:#0057ae;'>char</span><b>):</b> <span style='color:#0057ae;'>string</span> <span style='color:#898887;'>=</span>
+  <span style='color:#0057ae;'>for</span> c <span style='color:#898887;'>in</span> str<b>:</b>
+    <span style='color:#006e28;'>result</span> <span style='color:#898887;'>&amp;=</span> <span style='color:#0057ae;'>fun</span><b>(</b>c<b>)</b>
+<span style='color:#898887;'>#Sugar lambda value</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>foo</span><span style='color:#bf0303;'>&quot;</span><b>.</b><span style='color:#0057ae;'>map</span><b>((</b>c<b>)</b> <span style='color:#898887;'>=&gt;</span> <span style='color:#0057ae;'>char</span><b>(</b><span style='color:#0057ae;'>ord</span><b>(</b>c<b>)</b> <span style='color:#898887;'>+</span> <span style='color:#b08000;'>1</span><b>))</b>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>foo</span><span style='color:#bf0303;'>&quot;</span><b>.</b><span style='color:#0057ae;'>map</span><b>(</b><b>proc </b><b>(</b>c<b>:</b> <span style='color:#0057ae;'>char</span><b>):</b> <span style='color:#0057ae;'>char</span> <span style='color:#898887;'>=</span> <span style='color:#0057ae;'>char</span><b>(</b><span style='color:#0057ae;'>ord</span><b>(</b>c<b>)</b> <span style='color:#898887;'>+</span> <span style='color:#b08000;'>1</span><b>))</b>
+
+<span style='color:#898887;'>#Math</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#0057ae;'>sin</span><b>(</b><span style='color:#b08000;'>30</span><span style='color:#b08000;'>.</span><span style='color:#b08000;'>0</span><b>.</b><span style='color:#0057ae;'>degToRad</span><b>()).</b><span style='color:#0057ae;'>round</span><b>(</b><span style='color:#b08000;'>2</span><b>)</b>
+
+<span style='color:#898887;'>#Files &amp; Strutils</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>abc</span><span style='color:#bf0303;'>&quot;</span><b>.</b><span style='color:#0057ae;'>toUpperAscii</span><b>().</b><span style='color:#0057ae;'>repeat</span><b>(</b><span style='color:#b08000;'>5</span><b>)</b>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Please enter your name:</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#898887;'>#let name:string = readLine(stdin)</span>
+<b>let</b> name<b>:</b><span style='color:#0057ae;'>string</span><span style='color:#898887;'>=</span><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Hallo</span><span style='color:#bf0303;'>&quot;</span>
+<b>const</b> filename<b>:</b><span style='color:#0057ae;'>string</span><span style='color:#898887;'>=</span><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>myfile.txt</span><span style='color:#bf0303;'>&quot;</span>
+<b>let</b> afile<span style='color:#898887;'>=</span><span style='color:#0057ae;'>open</span><b>(</b>filename<b>,</b>fmWrite<b>)</b>
+afile<b>.</b><span style='color:#0057ae;'>writeLine</span><b>(</b>name<b>)</b>
+afile<b>.</b><span style='color:#0057ae;'>writeLine</span><b>(</b>name<b>)</b>
+afile<b>.</b><span style='color:#0057ae;'>close</span>
+<span style='color:#0057ae;'>for</span> line <span style='color:#898887;'>in</span> <span style='color:#0057ae;'>lines</span><b>(</b>filename<b>):</b>
+  <span style='color:#0057ae;'>echo</span> line
+<span style='color:#898887;'>#os</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Number of commandline arguments:</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#0057ae;'>paramCount</span><b>()</b>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>First argument:</span><span style='color:#bf0303;'>&quot;</span><b>,</b><span style='color:#0057ae;'>paramStr</span><b>(</b><span style='color:#b08000;'>0</span><b>)</b>
+
+<span style='color:#898887;'>#Varargs</span>
+<b>proc </b><b><span style='color:#bf0303;'>printThings</span></b><b>(</b>things<b>:</b> <span style='color:#0057ae;'>varargs</span><b>[</b><span style='color:#0057ae;'>string</span><b>])</b> <span style='color:#898887;'>=</span>
+  <span style='color:#0057ae;'>for</span> thing <span style='color:#898887;'>in</span> things<b>:</b>
+    <span style='color:#0057ae;'>echo</span> thing
+<span style='color:#0057ae;'>printThings</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>words</span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>to</span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>print</span><span style='color:#bf0303;'>&quot;</span>
+
+<span style='color:#898887;'>#FFI:</span>
+<b>proc </b><b><span style='color:#bf0303;'>strcmp</span></b><b>(</b>a<b>,</b> b<b>:</b> <span style='color:#0057ae;'>cstring</span><b>):</b> <span style='color:#0057ae;'>cint</span> {.importc: &quot;strcmp&quot;, nodecl.}
+<span style='color:#0057ae;'>echo</span> <span style='color:#0057ae;'>strcmp</span><b>(</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>C?</span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Easy!</span><span style='color:#bf0303;'>&quot;</span><b>)</b>
+
+<span style='color:#898887;'>#Calling a C function</span>
+<b>proc </b><b><span style='color:#bf0303;'>printf</span></b><b>(</b>formatstr<b>:</b> <span style='color:#0057ae;'>cstring</span><b>)</b> {.header: &quot;&lt;stdio.h&gt;&quot;, varargs.}
+<b>var</b> xxx <span style='color:#898887;'>=</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>foo</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#0057ae;'>printf</span><b>(</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Hello %d %s!</span>\n<span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#b08000;'>12</span><b>,</b> xxx<b>)</b>
+
+<span style='color:#898887;'>#Testing the os</span>
+<span style='color:#0057ae;'>when</span> <span style='color:#0057ae;'>defined</span><b>(</b>windows<b>):</b>
+  <b>const</b> imglib <span style='color:#898887;'>=</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>a</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#0057ae;'>elif</span> <span style='color:#0057ae;'>defined</span><b>(</b>macosx<b>):</b>
+  <b>const</b> imglib <span style='color:#898887;'>=</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>b</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#0057ae;'>else</span><b>:</b>
+  <b>const</b> imglib <span style='color:#898887;'>=</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>c</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#0057ae;'>echo</span> imglib
+
+<span style='color:#898887;'>#Strfmt</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Hello {} number {:04.1f}</span><span style='color:#bf0303;'>&quot;</span><b>.</b><span style='color:#0057ae;'>fmt</span><b>(</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>World</span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#b08000;'>6</span><span style='color:#b08000;'>.</span><span style='color:#b08000;'>0</span><b>)</b>
+
+<span style='color:#898887;'>#Time</span>
+<b>proc </b><b><span style='color:#bf0303;'>mylog</span></b><b>(</b>text<b>:</b> <span style='color:#0057ae;'>string</span><b>)</b> <span style='color:#898887;'>=</span>
+  <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>[$# $#]: $#</span><span style='color:#bf0303;'>&quot;</span> <span style='color:#898887;'>%</span> <b>[</b><span style='color:#0057ae;'>getDateStr</span><b>(),</b> <span style='color:#0057ae;'>getClockStr</span><b>(),</b> text<b>]</b>
+<span style='color:#0057ae;'>mylog</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Hello world</span><span style='color:#bf0303;'>&quot;</span>
+
+<span style='color:#898887;'>#Template language extension</span>
+<b>template </b><b><span style='color:#bf0303;'>times</span></b><b>(</b>integer<b>:</b> <span style='color:#0057ae;'>int</span><b>,</b> code_to_repeat<b>:</b> <span style='color:#0057ae;'>untyped</span><b>):</b> <span style='color:#0057ae;'>untyped</span> <span style='color:#898887;'>=</span>
+    <span style='color:#0057ae;'>for</span> i <span style='color:#898887;'>in</span> <span style='color:#b08000;'>1</span><b>..</b>integer<b>:</b>
+        code_to_repeat
+        
+<span style='color:#b08000;'>4</span><b>.</b><span style='color:#0057ae;'>times</span><b>:</b>
+    <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Hello World</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#0057ae;'>times</span><b>(</b><span style='color:#b08000;'>4</span><b>):</b>
+    <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Hello World</span><span style='color:#bf0303;'>&quot;</span>
+
+<span style='color:#898887;'>#Rewrite a and a as a</span>
+<b>template </b><b><span style='color:#bf0303;'>optLog1</span></b><b>{</b>a <span style='color:#898887;'>and</span> a<b>}(</b>a<b>):</b> auto <span style='color:#898887;'>=</span> a
+
+<span style='color:#898887;'>#Template (no function call)</span>
+<b>template </b><b><span style='color:#bf0303;'>mylog2</span></b><b>(</b>text<b>:</b> <span style='color:#0057ae;'>string</span><b>)</b> <span style='color:#898887;'>=</span>
+    <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>[$# $#]: $#</span><span style='color:#bf0303;'>&quot;</span> <span style='color:#898887;'>%</span> <b>[</b><span style='color:#0057ae;'>getDateStr</span><b>(),</b> <span style='color:#0057ae;'>getClockStr</span><b>(),</b> text<b>]</b>
+<span style='color:#0057ae;'>mylog2</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Hello world</span><span style='color:#bf0303;'>&quot;</span>
+<b>var</b> x9 <span style='color:#898887;'>=</span> <span style='color:#b08000;'>12</span>
+<b>var</b> y9 <span style='color:#898887;'>=</span> <span style='color:#b08000;'>3</span><span style='color:#b08000;'>.</span><span style='color:#b08000;'>4</span>
+<span style='color:#0057ae;'>mylog2</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>{} + {:.2f} == {}</span><span style='color:#bf0303;'>&quot;</span><b>.</b><span style='color:#0057ae;'>fmt</span><b>(</b>x9<b>,</b> y9<b>,</b> x9<b>.</b><span style='color:#0057ae;'>float</span> <span style='color:#898887;'>+</span> y9<b>)</b>
+<span style='color:#0057ae;'>mylog2</span>  interp<span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>I have $x Bananas!</span><span style='color:#bf0303;'>&quot;</span>
+
+<span style='color:#898887;'>#Generics</span>
+<b>proc </b><b><span style='color:#bf0303;'>mymin</span></b><b>[</b><span style='color:#0057ae;'>T</span><b>](</b>x<b>,</b> y<b>:</b> <span style='color:#0057ae;'>T</span><b>):</b> <span style='color:#0057ae;'>T</span> <span style='color:#898887;'>=</span>
+  <span style='color:#0057ae;'>if</span> x <span style='color:#898887;'>&lt;</span> y<b>:</b> <span style='color:#0057ae;'>x</span> <span style='color:#0057ae;'>else</span><b>:</b> y
+<span style='color:#0057ae;'>echo</span> <span style='color:#0057ae;'>mymin</span><b>(</b><span style='color:#b08000;'>2</span><b>,</b> <span style='color:#b08000;'>3</span><b>)</b> <span style='color:#898887;'># more explicitly: min[int](2, 3)</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#0057ae;'>mymin</span><b>(</b><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>foo</span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>bar</span><span style='color:#bf0303;'>&quot;</span><b>)</b> <span style='color:#898887;'># min[string](&quot;foo&quot;, &quot;bar&quot;)</span>
+
+<span style='color:#898887;'>#Inline iterator</span>
+<b>iterator </b><b><span style='color:#bf0303;'>areverseItems</span></b><b>(</b>x<b>:</b> <span style='color:#0057ae;'>string</span><b>):</b> <span style='color:#0057ae;'>char</span> <span style='color:#898887;'>=</span>
+  <span style='color:#0057ae;'>for</span> i <span style='color:#898887;'>in</span> <span style='color:#0057ae;'>countdown</span><b>(</b>x<b>.</b><span style='color:#0057ae;'>high</span><b>,</b> x<b>.</b><span style='color:#0057ae;'>low</span><b>):</b>
+    <span style='color:#0057ae;'>yield</span> x<b>[</b>i<b>]</b>
+<span style='color:#0057ae;'>for</span> c <span style='color:#898887;'>in</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>foo</span><span style='color:#bf0303;'>&quot;</span><b>.</b><span style='color:#0057ae;'>areverseItems</span><b>:</b>
+  <span style='color:#0057ae;'>echo</span> c
+  
+<span style='color:#898887;'>#Generics inline iterator</span>
+<b>iterator </b><b><span style='color:#bf0303;'>breverseItems</span></b><b>[</b><span style='color:#0057ae;'>T</span><b>](</b>x<b>:</b> <span style='color:#0057ae;'>T</span><b>):</b> auto <span style='color:#898887;'>=</span>
+  <span style='color:#0057ae;'>for</span> i <span style='color:#898887;'>in</span> <span style='color:#0057ae;'>countdown</span><b>(</b>x<b>.</b><span style='color:#0057ae;'>high</span><b>,</b> x<b>.</b><span style='color:#0057ae;'>low</span><b>):</b>
+    <span style='color:#0057ae;'>yield</span> x<b>[</b>i<b>]</b>
+<span style='color:#0057ae;'>for</span> c <span style='color:#898887;'>in</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>foo</span><span style='color:#bf0303;'>&quot;</span><b>.</b><span style='color:#0057ae;'>breverseItems</span><b>:</b>
+  <span style='color:#0057ae;'>echo</span> c
+  
+<span style='color:#898887;'>#Closure iterators</span>
+<b>proc </b><b><span style='color:#bf0303;'>mypowers</span></b><b>(</b>m<b>:</b> <span style='color:#0057ae;'>int</span><b>):</b> auto <span style='color:#898887;'>=</span>
+    <span style='color:#898887;'>#return iterator: int {.closure.} = # Make a closure explicitly</span>
+    <span style='color:#0057ae;'>return</span> <b>iterator</b><b>:</b> <span style='color:#0057ae;'>int</span> <span style='color:#898887;'>=</span> <span style='color:#898887;'># Compiler makes this a closure for us</span>
+        <span style='color:#0057ae;'>for</span> n <span style='color:#898887;'>in</span> <span style='color:#b08000;'>0</span><b>..</b><span style='color:#0057ae;'>int</span><b>.</b><span style='color:#0057ae;'>high</span><b>:</b>
+            <span style='color:#0057ae;'>yield</span> n<span style='color:#898887;'>^</span>m
+
+<b>var</b>
+    squares <span style='color:#898887;'>=</span> <span style='color:#0057ae;'>mypowers</span><b>(</b><span style='color:#b08000;'>2</span><b>)</b>
+    cubes <span style='color:#898887;'>=</span>   <span style='color:#0057ae;'>mypowers</span><b>(</b><span style='color:#b08000;'>3</span><b>)</b>
+
+<span style='color:#0057ae;'>for</span> i <span style='color:#898887;'>in</span> <span style='color:#b08000;'>1</span><b>..</b><span style='color:#b08000;'>4</span><b>:</b>
+    <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Square: </span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#0057ae;'>squares</span><b>()</b> <span style='color:#898887;'># 0, 1, 4, 9</span>
+<span style='color:#0057ae;'>for</span> i <span style='color:#898887;'>in</span> <span style='color:#b08000;'>1</span><b>..</b><span style='color:#b08000;'>4</span><b>:</b>
+    <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Cube: </span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#0057ae;'>cubes</span><b>()</b>     <span style='color:#898887;'># 0, 1, 8, 27</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Square: </span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#0057ae;'>squares</span><b>()</b>   <span style='color:#898887;'># 16</span>
+<span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>Cube: </span><span style='color:#bf0303;'>&quot;</span><b>,</b> <span style='color:#0057ae;'>cubes</span><b>()</b>       <span style='color:#898887;'># 64</span>
+
+<span style='color:#898887;'>#Template locking</span>
+<b>template </b><b><span style='color:#bf0303;'>withLock</span></b><b>(</b>lock<b>:</b> <span style='color:#0057ae;'>Lock</span><b>,</b> body<b>:</b> <span style='color:#0057ae;'>untyped</span><b>)</b> <span style='color:#898887;'>=</span>
+    <span style='color:#0057ae;'>acquire</span> lock
+    <span style='color:#0057ae;'>try</span><b>:</b>
+        body
+    <span style='color:#0057ae;'>finally</span><b>:</b>
+        <span style='color:#0057ae;'>release</span> lock
+<b>var</b> lock<b>:</b><span style='color:#0057ae;'>Lock</span>
+<span style='color:#0057ae;'>initLock</span> lock
+<span style='color:#0057ae;'>withLock</span> lock<b>:</b>
+    <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>a</span><span style='color:#bf0303;'>&quot;</span>
+    <span style='color:#0057ae;'>echo</span> <span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>b</span><span style='color:#bf0303;'>&quot;</span>
+    
+<span style='color:#898887;'>#Macros</span>
+<b>macro </b><b><span style='color:#bf0303;'>m</span></b><b>():</b> <span style='color:#0057ae;'>untyped</span> <span style='color:#898887;'>=</span>
+    <span style='color:#006e28;'>result</span> <span style='color:#898887;'>=</span> parseStmt<span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#bf0303;'>echo </span><span style='color:#bf0303;'>&quot;</span>foo<span style='color:#bf0303;'>&quot;</span>
+<span style='color:#bf0303;'>echo </span><span style='color:#bf0303;'>&quot;</span>bar<span style='color:#bf0303;'>&quot;</span>
+<span style='color:#bf0303;'>    </span><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>&quot;</span><span style='color:#bf0303;'>&quot;</span>
+<span style='color:#0057ae;'>m</span><b>()</b>
+</pre>
+</body>
+</html>
